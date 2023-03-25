@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg"
+    tools:context=".MainActivity">
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="273dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="372dp"
+        android:background="#246BFD"
+        android:fontFamily="@font/inter_semibold"
+        android:text="@string/button_log"
+        app:cornerRadius="@android:dimen/app_icon_size"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:strokeColor="#FFFFFF" />
+
+    <Button
+        android:id="@+id/button4"
+        android:layout_width="273dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="452dp"
+        android:background="#246BFD"
+        android:fontFamily="@font/inter_semibold"
+         android:text="@string/button_reg"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/text_log"
+        android:layout_width="213dp"
+        android:layout_height="49dp"
+        android:layout_marginTop="228dp"
+        android:backgroundTint="#AEAEAE"
+        android:ems="10"
+        android:fontFamily="@font/inter_semibold"
+        android:hint="@string/text_log"
+        android:text="@string/text_log"
+        android:textColor="#5E6272"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <EditText
+        android:id="@+id/text_pass"
+        android:layout_width="213dp"
+        android:layout_height="49dp"
+        android:layout_marginTop="296dp"
+        android:backgroundTint="#AEAEAE"
+        android:ems="10"
+        android:fontFamily="@font/inter_semibold"
+        android:hint="@string/text_password"
+        android:text="@string/text_password"
+        android:textColor="#5E6272"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
