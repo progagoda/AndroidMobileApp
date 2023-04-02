@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.studhelper.InterFamily
+import com.example.studhelper.Routes
 import com.example.studhelper.components.Input
 
 @Composable
@@ -29,16 +30,20 @@ fun Login(navController: NavHostController){
     ) {
         Input(name = "Login")
         Input(name = "Password")
-        Button(onClick = {},
-            modifier = Modifier.height(40.dp).width(250.dp),
+        Button(onClick = {navController.navigate(Routes.ChooseGroup.route)},
+            modifier = Modifier
+                .height(40.dp)
+                .width(250.dp),
             shape =   RoundedCornerShape(30),
             contentPadding = PaddingValues(10.dp),
             colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFF246BFD)
             )) {
             Text("Login", fontSize = 15.sp,fontFamily = InterFamily, fontWeight = FontWeight.Bold, color = Color.White)
         }
-        Button(onClick = {},
-            modifier = Modifier.height(40.dp).width(250.dp),
+        Button(onClick = { navController.navigate(Routes.Register.route)},
+            modifier = Modifier
+                .height(40.dp)
+                .width(250.dp),
             shape =   RoundedCornerShape(30),
             contentPadding = PaddingValues(10.dp),
             colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFF246BFD))) {

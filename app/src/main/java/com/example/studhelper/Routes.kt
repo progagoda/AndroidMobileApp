@@ -5,4 +5,5 @@ package com.example.studhelper
 sealed class Routes(val route: String) {
     object Login : Routes("login")
     object Register: Routes("register")
+    object ChooseGroup: Routes("chooseGroup")
 }

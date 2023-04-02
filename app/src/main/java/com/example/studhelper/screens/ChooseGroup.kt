@@ -19,7 +19,7 @@ import com.example.studhelper.Routes
 import com.example.studhelper.components.Input
 
 @Composable
-fun Register(navController: NavHostController) {
+fun ChooseGroup(navController: NavHostController) {
     Column(
         modifier = Modifier
             .background(Color(0xFF313030))
@@ -28,9 +28,6 @@ fun Register(navController: NavHostController) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically)
     ) {
-        Input(name = "Name")
-        Input(name = "Surname")
-        Input(name = "Password")
 
         Button(
             onClick = { navController.navigate(Routes.Login.route) },
@@ -44,7 +41,7 @@ fun Register(navController: NavHostController) {
             )
         ) {
             Text(
-                "Login",
+                "Create group",
                 fontSize = 15.sp,
                 fontFamily = InterFamily,
                 fontWeight = FontWeight.Bold,
@@ -52,7 +49,7 @@ fun Register(navController: NavHostController) {
             )
         }
         Button(
-            onClick = {navController.navigate(Routes.ChooseGroup.route)
+            onClick = {
             },
             modifier = Modifier
                 .height(40.dp)
@@ -62,7 +59,7 @@ fun Register(navController: NavHostController) {
             colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFF246BFD))
         ) {
             Text(
-                "Register",
+                "Join a group",
                 fontSize = 15.sp,
                 fontFamily = InterFamily,
                 fontWeight = FontWeight.Bold,
