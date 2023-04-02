@@ -1,8 +1,3 @@
 <resources>
-    <string name="app_name">My Application</string>
-    <string name="button_log">Войти</string>
-    <string name="button_reg">Зарегистрироваться</string>
-    <string name="text_log">Введите логин</string>
-    <string name="text_password">Введите пароль</string>
-
+    <string name="app_name">StudHelper</string>
 </resources>
