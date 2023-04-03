@@ -1,10 +1,8 @@
 package com.example.studhelper.components
 
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Text
+import androidx.compose.material.*
+import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -12,7 +10,9 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.key.Key.Companion.W
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -28,17 +28,34 @@ fun Input(name:String){
     var passwordVisibility by rememberSaveable{
         mutableStateOf(false)
     }
-    OutlinedTextField(value = input , onValueChange ={
-        input= it
-    },
-        placeholder = { Text(text = name, fontFamily = InterFamily, fontWeight = FontWeight.SemiBold, color = Color.White) },
-        label= { Text(text = name,fontFamily = InterFamily, fontWeight = FontWeight.SemiBold, color = Color.White) },
+    OutlinedTextField(
+        value = input,
+        onValueChange = {
+            input = it
+        },
+        textStyle = TextStyle(color = Color.White, fontFamily = InterFamily, fontWeight = FontWeight.SemiBold),
+        placeholder = {
+            Text(
+                text = name,
+                fontFamily = InterFamily,
+                fontWeight = FontWeight.SemiBold,
+                color = Color.White
+            )
+        },
+        label = {
+            Text(
+                text = name,
+                fontFamily = InterFamily,
+                fontWeight = FontWeight.SemiBold,
+                color = Color.White
+            )
+        },
         trailingIcon = {
             if (name == "Password") {
-                val icon = if(passwordVisibility)
+                val icon = if (passwordVisibility)
                     painterResource(id = R.drawable.design_ic_visibility)
                 else painterResource(id = R.drawable.design_ic_visibility_off)
-                IconButton(onClick = { passwordVisibility=!passwordVisibility}) {
+                IconButton(onClick = { passwordVisibility = !passwordVisibility }) {
                     Icon(
                         painter = icon,
                         contentDescription = "Visibility Icon",
@@ -46,13 +63,13 @@ fun Input(name:String){
                     )
 
                 }
-            } else {}
+            } else {
+            }
         },
-        visualTransformation = if(name == "Password") {
+        visualTransformation = if (name == "Password") {
             if (passwordVisibility) {
-                VisualTransformation.None}
-            else PasswordVisualTransformation()
-        }
-        else VisualTransformation.None,
+                VisualTransformation.None
+            } else PasswordVisualTransformation()
+        } else VisualTransformation.None,
     )
 }
