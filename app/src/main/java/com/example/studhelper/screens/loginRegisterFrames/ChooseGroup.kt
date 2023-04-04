@@ -10,7 +10,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.studhelper.screens.loginRegisterFrames.Routes
-import com.example.studhelper.components.BlueButton
+import com.example.studhelper.components.CustomButton
 
 @Composable
 fun ChooseGroup(navController: NavHostController) {
@@ -27,7 +27,7 @@ fun ChooseGroup(navController: NavHostController) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically)
     ) {
-        BlueButton(action = {navController.navigate(Routes.CreateGroup.route)}, name ="Create group" )
-        BlueButton(action = {navController.navigate(Routes.JoinGroup.route)}, name ="Join a group" )
+        CustomButton(action = {navController.navigate(Routes.CreateGroup.route)}, name ="Create group" )
+        CustomButton(action = {navController.navigate(Routes.JoinGroup.route)}, name ="Join a group" )
     }
 }

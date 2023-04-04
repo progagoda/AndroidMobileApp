@@ -10,5 +10,6 @@ sealed class Routes(val route: String) {
     object ChooseGroup: Routes("chooseGroup")
     object CreateGroup: Routes("createGroup")
     object JoinGroup: Routes("joinGroup")
-    object Queue: Routes("Queue")
+    object Queue: Routes("queue")
+    object CreateQueue: Routes("createQueue")
 }

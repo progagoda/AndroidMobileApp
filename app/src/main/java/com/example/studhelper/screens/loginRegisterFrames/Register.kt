@@ -9,7 +9,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.example.studhelper.components.BlueButton
+import com.example.studhelper.components.CustomButton
 import com.example.studhelper.components.Input
 
 @Composable
@@ -30,6 +30,6 @@ fun Register(navController: NavHostController) {
         Input(name = "Name")
         Input(name = "Surname")
         Input(name = "Password")
-        BlueButton(action = {navController.navigate(Routes.ChooseGroup.route)}, name ="Register" )
+        CustomButton(action = {navController.navigate(Routes.ChooseGroup.route)}, name ="Register")
     }
 }

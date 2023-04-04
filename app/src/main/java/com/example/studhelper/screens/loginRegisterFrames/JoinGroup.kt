@@ -12,7 +12,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.example.studhelper.components.BlueButton
+import com.example.studhelper.components.CustomButton
 import com.example.studhelper.components.Input
 
 @Composable
@@ -31,6 +31,6 @@ fun JoinGroup(navController: NavHostController){
         verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically)
     ) {
         Input(name = "Group code")
-        BlueButton(action = {navController.navigate(Routes.Queue.route)}, name ="Join")
+        CustomButton(action = {navController.navigate(Routes.Queue.route)}, name ="Join")
     }
 }
