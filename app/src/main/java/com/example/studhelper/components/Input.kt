@@ -1,12 +1,13 @@
 package com.example.studhelper.components
 
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.*
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -19,19 +20,18 @@ import com.example.studhelper.InterFamily
 import com.example.studhelper.R
 
 @Composable
-fun Input(name:String){
-    var input by rememberSaveable{
-        mutableStateOf("")
-    }
-    var passwordVisibility by rememberSaveable{
+fun Input(name: String, text: String, onTextChange: (text:String) -> Unit) {
+    var passwordVisibility = remember {
         mutableStateOf(false)
     }
     OutlinedTextField(
-        value = input,
-        onValueChange = {
-            input = it
-        },
-        textStyle = TextStyle(color = Color.White, fontFamily = InterFamily, fontWeight = FontWeight.SemiBold),
+        value = text,
+        onValueChange = onTextChange,
+        textStyle = TextStyle(
+            color = Color.White,
+            fontFamily = InterFamily,
+            fontWeight = FontWeight.SemiBold
+        ),
         placeholder = {
             Text(
                 text = name,
@@ -50,10 +50,10 @@ fun Input(name:String){
         },
         trailingIcon = {
             if (name == "Password") {
-                val icon = if (passwordVisibility)
+                val icon = if (passwordVisibility.value)
                     painterResource(id = R.drawable.design_ic_visibility)
                 else painterResource(id = R.drawable.design_ic_visibility_off)
-                IconButton(onClick = { passwordVisibility = !passwordVisibility }) {
+                IconButton(onClick = { passwordVisibility.value = !passwordVisibility.value }) {
                     Icon(
                         painter = icon,
                         contentDescription = "Visibility Icon",
@@ -64,7 +64,7 @@ fun Input(name:String){
             }
         },
         visualTransformation = if (name == "Password") {
-            if (passwordVisibility) {
+            if (passwordVisibility.value) {
                 VisualTransformation.None
             } else PasswordVisualTransformation()
         } else VisualTransformation.None,

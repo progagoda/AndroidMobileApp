@@ -1,4 +1,4 @@
-package com.example.studhelper.screens.mainFrames.student
+package com.example.studhelper.screens.mainFrames.student.myGroup
 
 
 import androidx.compose.foundation.layout.fillMaxHeight

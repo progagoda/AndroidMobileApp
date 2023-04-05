@@ -27,7 +27,6 @@ import com.example.studhelper.screens.loginRegisterFrames.Routes
 fun Queue(
     navController: NavHostController,
     subjects: List<Subject>,
-    addSubject: (Subject) -> Unit,
     deleteSubject: (Subject) -> Unit
 ) {
     var admin = true;// depends on user usual student or admin of group
@@ -54,7 +53,7 @@ fun Queue(
                         )
                         if (admin) {
                             CustomButton(
-                                action = { navController.navigate(Routes.CreateQueue.route)},
+                                action = {navController.navigate(Routes.CreateQueue.route)},
                                 name = "Создать очередь",
                                 color = Color.Green,
                                 height = 40.dp,
@@ -69,7 +68,7 @@ fun Queue(
                         subject = item,
                         currentCount = (0..30).random(),
                         allCount = (25..30).random(),
-                        admin = true,
+                        admin = admin,
                         deleteSubject = deleteSubject
                     )
                 }

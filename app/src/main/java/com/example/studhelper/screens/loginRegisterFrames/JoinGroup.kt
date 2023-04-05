@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -17,6 +19,7 @@ import com.example.studhelper.components.Input
 
 @Composable
 fun JoinGroup(navController: NavHostController){
+    var groupCode = rememberSaveable { mutableStateOf("") }
     Column(
         modifier = Modifier
             .background(brush = Brush.linearGradient(
@@ -30,7 +33,7 @@ fun JoinGroup(navController: NavHostController){
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically)
     ) {
-        Input(name = "Group code")
+        Input(name = "Group code", text=groupCode.value, onTextChange = {groupCode.value=it})
         CustomButton(action = {navController.navigate(Routes.Queue.route)}, name ="Join")
     }
 }
