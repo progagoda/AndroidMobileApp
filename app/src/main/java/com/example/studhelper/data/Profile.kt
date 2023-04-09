@@ -1,10 +1,11 @@
 package com.example.studhelper.data
 
 import android.os.Parcelable
-import androidx.versionedparcelable.VersionedParcelize
 import com.example.studhelper.R
+import com.example.studhelper.data.ProfilesRepo.getProfiles
 import kotlinx.android.parcel.Parcelize
-
+//TODO добавить поле admin true false
+//TODO создать отдельно объект группа, поля в нем названия и код и изменить поле group в Profile на тип объект
 @Parcelize
  data class Profile(
     val name: String,
@@ -28,9 +29,17 @@ private fun profiles(): List<Profile>{
     }
     return profiles
 }
-object ProfilesRepo{
+object ProfilesRepo {
     fun getProfiles(): List<Profile> = profiles()
-    fun setGroup(profile: Profile, group: String){
-        profile.group=group;
+    fun addProfile(profile: Profile) {
+        var profiles = mutableListOf<Profile>()
+        profiles = profiles() as MutableList<Profile>
+        profiles.add(profile)
+
     }
+
+    fun setGroup(profile: Profile, group: String) {
+        profile.group = group;
     }
+}
+

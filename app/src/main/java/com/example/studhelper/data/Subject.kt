@@ -1,5 +1,6 @@
 package com.example.studhelper.data
-
+//TODO добавить поле лист записавшихся студентов
+//TODO изменить тип пол group на объект
 data class Subject(
     val name: String,
     val group: String

@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.studhelper.components.CustomButton
 import com.example.studhelper.components.Input
-
+//TODO сдедать реализацию присоединения к группе в виде соотв функций
 @Composable
 fun JoinGroup(navController: NavHostController){
     var groupCode = rememberSaveable { mutableStateOf("") }

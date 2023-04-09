@@ -20,10 +20,13 @@ import com.example.studhelper.InterFamily
 import com.example.studhelper.R
 import com.example.studhelper.components.BottomMenu
 import com.example.studhelper.components.CustomButton
+import com.example.studhelper.funtions.logOut
 import com.example.studhelper.screens.loginRegisterFrames.Routes
+import com.example.studhelper.screens.mainFrames.student.profile.ProfileViewModel
 
 @Composable
-fun Profile(navController: NavHostController) {
+fun Profile(navController: NavHostController,
+profileViewModel: ProfileViewModel) {
     Scaffold(
         bottomBar = { BottomMenu(navController = navController, currentPage= "Профиль") },
         backgroundColor = Color(0xFF26264C), // Set background color to avoid the white flashing when you switch between screens
@@ -50,11 +53,12 @@ fun Profile(navController: NavHostController) {
                    modifier=Modifier.fillMaxWidth().padding(vertical = 10.dp),
                    horizontalAlignment = Alignment.CenterHorizontally
                ) {
-                   Text(text = "Aртурито", fontFamily = InterFamily, fontWeight = FontWeight.Bold, fontSize = 40.sp, color = Color.White)
-                   Text(text = "33131", fontFamily = InterFamily, fontSize = 20.sp,color = Color.White)
-                   CustomButton(action = {navController.navigate(Routes.Login.route)}, name ="Выйти из профиля" )
+                   Text(text = profileViewModel.currentProfile.name, fontFamily = InterFamily, fontWeight = FontWeight.Bold, fontSize = 40.sp, color = Color.White)
+                   Text(text = profileViewModel.currentProfile.group, fontFamily = InterFamily, fontSize = 20.sp,color = Color.White)
+                   CustomButton(action = {logOut(profileViewModel,navController)}, name ="Выйти из профиля" )
                }
 
-            } }
+            }
+        }
     )
 }

@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.example.studhelper.components.Warning
 import com.example.studhelper.data.Subject
 import com.example.studhelper.data.SubjectsRepo
-
+//TODO сделать методы записи и отписи от очереди
 class SubjectViewModel:ViewModel(){
     var subjects by mutableStateOf(SubjectsRepo.getSubjects())
     fun addSubject(subject: Subject){

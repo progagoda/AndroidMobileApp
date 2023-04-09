@@ -33,7 +33,7 @@ fun SubjectCard(subject: Subject, currentCount: Int, allCount: Int, admin: Boole
     Card(
         elevation = 10.dp,
         modifier = Modifier.padding(vertical = 5.dp),
-        shape = RoundedCornerShape(15)
+        shape = RoundedCornerShape(15)/* TODO Здесь нужно здесь отдельный фрейм каждой очереди, создать объект очередь и передавать его*/
     ) {
         Box(
             modifier = Modifier.background(

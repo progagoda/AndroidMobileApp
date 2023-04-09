@@ -14,14 +14,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.studhelper.InterFamily
+import com.example.studhelper.components.CustomButton
+import com.example.studhelper.components.Input
 import com.example.studhelper.data.Subject
 import com.example.studhelper.screens.loginRegisterFrames.Routes
 import kotlinx.coroutines.launch
-
 @Composable
 fun CreateQueue(
     navController: NavController,
@@ -32,6 +34,17 @@ fun CreateQueue(
     }
     val scaffoldState = rememberScaffoldState()
     val coroutineScope = rememberCoroutineScope()
+    fun check(){
+        if (input.value == "") {
+            coroutineScope.launch{
+                scaffoldState.snackbarHostState.showSnackbar(
+                    message = "Поле не может быть пустым")
+            }
+        } else {
+            addSubject(Subject(name = input.value, group = "P33131"))
+            navController.navigate(Routes.Queue.route)
+        }
+    }
     Scaffold(
         modifier = Modifier,
         scaffoldState = scaffoldState // attaching `scaffoldState` to the `Scaffold`
@@ -51,62 +64,8 @@ fun CreateQueue(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically)
         ) {
-            OutlinedTextField(
-                value = input.value,
-                onValueChange = {
-                    input.value = it
-                },
-                textStyle = TextStyle(
-                    color = Color.White,
-                    fontFamily = InterFamily,
-                    fontWeight = FontWeight.SemiBold
-                ),
-                placeholder = {
-                    Text(
-                        text = "Имя очереди",
-                        fontFamily = InterFamily,
-                        fontWeight = FontWeight.SemiBold,
-                        color = Color.White
-                    )
-                },
-                label = {
-                    Text(
-                        text = "Имя очереди",
-                        fontFamily = InterFamily,
-                        fontWeight = FontWeight.SemiBold,
-                        color = Color.White
-                    )
-                })
-            Button(
-                onClick = {
-                    if (input.value == "") {
-                        coroutineScope.launch{
-                           scaffoldState.snackbarHostState.showSnackbar(
-                                message = "Поле не может быть пустым")
-                        }
-                    } else {
-                        addSubject(Subject(name = input.value, group = "P33131"))
-                        navController.navigate(Routes.Queue.route)
-                    }
-                },
-                modifier = Modifier
-                    .height(40.dp)
-                    .width(250.dp),
-                shape = RoundedCornerShape(30),
-                contentPadding = PaddingValues(10.dp),
-                colors = ButtonDefaults.buttonColors(
-                    backgroundColor = Color(0xFF246BFD)
-                )
-            ) {
-                Text(
-                    text = "Add Queue",
-                    fontSize = 15.sp,
-                    fontFamily = InterFamily,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.White,
-                    textAlign = TextAlign.Center
-                )
-            }
+            Input(name = "Имя очереди", text = input.value , onTextChange = {input.value=it})
+            CustomButton(name ="Добавить очередь", action={check()})
         }
     }
 }

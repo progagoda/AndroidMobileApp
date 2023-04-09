@@ -22,10 +22,12 @@ import com.example.studhelper.components.CustomButton
 import com.example.studhelper.components.SubjectCard
 import com.example.studhelper.data.Subject
 import com.example.studhelper.screens.loginRegisterFrames.Routes
+import com.example.studhelper.screens.mainFrames.student.profile.ProfileViewModel
 
 @Composable
 fun Queue(
     navController: NavHostController,
+    profileViewModel: ProfileViewModel,
     subjects: List<Subject>,
     deleteSubject: (Subject) -> Unit
 ) {

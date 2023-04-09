@@ -16,20 +16,20 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.studhelper.InterFamily
-import com.example.studhelper.R
 import com.example.studhelper.components.BottomMenu
 import com.example.studhelper.components.GroupmateCard
+import com.example.studhelper.data.Profile
+import com.example.studhelper.funtions.loadGroup
+import com.example.studhelper.screens.mainFrames.student.profile.ProfileViewModel
 
 @Composable
-fun MyGroup(navController: NavHostController) {
-    val subject = arrayListOf<String>(
-        "Байрамова Хумай Бахруp Кызы",
-        "Балканский Андрей Александрович",
-        "Перл Иван Алексеевич",
-    )
+fun MyGroup(navController: NavHostController,
+profiles: List<Profile>, profileViewModel: ProfileViewModel) {
+  val subject = mutableListOf<Profile>()
+  loadGroup(profiles,profileViewModel,subject)
     Scaffold(
         bottomBar = { BottomMenu(navController = navController, currentPage = "Моя группа") },
-        content = { padding -> // We have to pass the scaffold inner padding to our content. That's why we use Box.
+        content = {
             LazyColumn(
                 modifier = Modifier
                     .fillMaxHeight(0.93f)
@@ -46,7 +46,7 @@ fun MyGroup(navController: NavHostController) {
                     )
                 }
                 itemsIndexed(subject) { index, item ->
-                    GroupmateCard(image = R.drawable.avatart, name = item )
+                    GroupmateCard(image = item.avatar, name = item.name )
                 }
             }
         },

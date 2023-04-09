@@ -1,4 +1,5 @@
 package com.example.studhelper.screens.loginRegisterFrames
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,21 +16,18 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.studhelper.components.CustomButton
 import com.example.studhelper.components.Input
-import com.example.studhelper.data.Profile
 import com.example.studhelper.screens.mainFrames.student.profile.ProfileViewModel
 
 @Composable
 fun CreateGroup(
     navController: NavHostController,
-    profile: Profile,
-    profileViewModel: ProfileViewModel
+    profileViewModel: ProfileViewModel,
 ) {
-    var groupNumber = rememberSaveable { mutableStateOf("") }
+    val groupNumber = rememberSaveable { mutableStateOf("") }
     fun joinGroup() {
-        val profileObject = navController.previousBackStackEntry?.arguments?.getParcelable<Profile>("currentProfile")
-        if (profileObject != null) {
-            profileViewModel.addGroup(profileObject, groupNumber.value)
-        }
+        val profileObject = profileViewModel.currentProfile
+        profileViewModel.addGroup(profileObject, groupNumber.value)
+        profileViewModel.currentProfile.group = groupNumber.value
     }
 
     fun redirect() {

@@ -1,4 +1,4 @@
-package com.example.studhelper.screens
+package com.example.studhelper.screens.loginRegisterFrames
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -11,9 +11,14 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.studhelper.screens.loginRegisterFrames.Routes
 import com.example.studhelper.components.CustomButton
+import com.example.studhelper.data.Profile
+import com.example.studhelper.screens.mainFrames.student.profile.ProfileViewModel
 
 @Composable
-fun ChooseGroup(navController: NavHostController) {
+fun ChooseGroup(
+    navController: NavHostController,
+    profileViewModel: ProfileViewModel,
+) {
     Column(
         modifier = Modifier
             .background(brush = Brush.linearGradient(

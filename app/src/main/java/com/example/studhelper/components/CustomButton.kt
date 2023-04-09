@@ -20,10 +20,10 @@ import com.example.studhelper.InterFamily
 @Composable
 fun CustomButton(action:()->Unit = {}, actionArr: Array<()->Unit> = arrayOf(), name:String, color: Color= Color(0xFF246BFD), height:Dp = 40.dp, width:Dp=250.dp, fontSize: TextUnit= 15.sp, padding: PaddingValues = PaddingValues(10.dp)){
     Button(onClick = {
-        if (actionArr.isEmpty()){
-            action
+        if (actionArr.isNotEmpty()){
+            actionArr.forEach() { function->function() }
         }
-         else actionArr.forEach() { function->function() }
+         else action()
     },
         modifier = Modifier
             .height(height)
