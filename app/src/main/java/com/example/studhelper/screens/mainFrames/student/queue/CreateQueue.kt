@@ -22,29 +22,23 @@ import com.example.studhelper.InterFamily
 import com.example.studhelper.components.CustomButton
 import com.example.studhelper.components.Input
 import com.example.studhelper.data.Subject
+import com.example.studhelper.funtions.createQueue
 import com.example.studhelper.screens.loginRegisterFrames.Routes
+import com.example.studhelper.screens.mainFrames.student.myGroup.GroupViewModel
+import com.example.studhelper.screens.mainFrames.student.profile.ProfileViewModel
 import kotlinx.coroutines.launch
 @Composable
 fun CreateQueue(
     navController: NavController,
     addSubject: (Subject) -> Unit,
+    profileViewModel: ProfileViewModel,
+    groupViewModel: GroupViewModel
 ) {
-    var input = remember {
+    val input = remember {
         mutableStateOf("")
     }
     val scaffoldState = rememberScaffoldState()
     val coroutineScope = rememberCoroutineScope()
-    fun check(){
-        if (input.value == "") {
-            coroutineScope.launch{
-                scaffoldState.snackbarHostState.showSnackbar(
-                    message = "Поле не может быть пустым")
-            }
-        } else {
-            addSubject(Subject(name = input.value, group = "P33131"))
-            navController.navigate(Routes.Queue.route)
-        }
-    }
     Scaffold(
         modifier = Modifier,
         scaffoldState = scaffoldState // attaching `scaffoldState` to the `Scaffold`
@@ -65,7 +59,7 @@ fun CreateQueue(
             verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically)
         ) {
             Input(name = "Имя очереди", text = input.value , onTextChange = {input.value=it})
-            CustomButton(name ="Добавить очередь", action={check()})
+            CustomButton(name ="Добавить очередь", action={createQueue(input,profileViewModel,scaffoldState,groupViewModel, coroutineScope,navController,addSubject)})
         }
     }
 }

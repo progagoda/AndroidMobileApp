@@ -54,7 +54,7 @@ fun Register(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically)
         ) {
-            Input(name = "ISU", text = isu.value.toString(), onTextChange = { isu.value = it })
+            Input(name = "ISU", text = isu.value, onTextChange = { isu.value = it })
             Input(name = "Name", text = name.value, onTextChange = { name.value = it })
             Input(name = "Surname", text = surname.value, onTextChange = { surname.value = it })
             Input(name = "Password", text = password.value, onTextChange = { password.value = it })

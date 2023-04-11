@@ -5,8 +5,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import com.example.studhelper.data.Group
 import com.example.studhelper.data.Profile
 import com.example.studhelper.data.ProfilesRepo
+import com.example.studhelper.screens.mainFrames.student.myGroup.GroupViewModel
+
 //TODO добавить метод проверки админ это или нет
 class ProfileViewModel:ViewModel(){
     var profiles by mutableStateOf(ProfilesRepo.getProfiles())
@@ -22,11 +25,13 @@ class ProfileViewModel:ViewModel(){
     fun setProfile(profile: Profile){
        currentProfile= profile;
     }
-    fun addGroup(profile: Profile, group: String){
-        if(profiles.contains(profile)|| profile.group==""){
-            profile.group=group
-            println(profiles)
+    fun profileList(group: Group): MutableList<Profile> {
+        val groupList = mutableListOf<Profile>()
+        profiles.forEach { item->
+            if(item.group==group){
+                groupList+= listOf(item)
+            }
         }
+        return groupList
     }
-
 }

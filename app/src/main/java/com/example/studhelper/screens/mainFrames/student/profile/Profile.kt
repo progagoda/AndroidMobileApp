@@ -54,7 +54,7 @@ profileViewModel: ProfileViewModel) {
                    horizontalAlignment = Alignment.CenterHorizontally
                ) {
                    Text(text = profileViewModel.currentProfile.name, fontFamily = InterFamily, fontWeight = FontWeight.Bold, fontSize = 40.sp, color = Color.White)
-                   Text(text = profileViewModel.currentProfile.group, fontFamily = InterFamily, fontSize = 20.sp,color = Color.White)
+                   Text(text = profileViewModel.currentProfile.group.name, fontFamily = InterFamily, fontSize = 20.sp,color = Color.White)
                    CustomButton(action = {logOut(profileViewModel,navController)}, name ="Выйти из профиля" )
                }
 

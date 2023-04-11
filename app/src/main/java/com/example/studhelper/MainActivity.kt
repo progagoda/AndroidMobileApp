@@ -16,6 +16,7 @@ import com.example.studhelper.screens.loginRegisterFrames.*
 import com.example.studhelper.screens.mainFrames.student.myGroup.MyGroup
 import com.example.studhelper.screens.mainFrames.student.NavigationBar
 import com.example.studhelper.screens.mainFrames.student.Profile
+import com.example.studhelper.screens.mainFrames.student.myGroup.GroupViewModel
 import com.example.studhelper.screens.mainFrames.student.profile.ProfileViewModel
 import com.example.studhelper.screens.mainFrames.student.queue.CreateQueue
 import com.example.studhelper.screens.mainFrames.student.queue.Queue
@@ -25,18 +26,19 @@ import com.example.studhelper.screens.mainFrames.student.queue.SubjectViewModel
 class MainActivity : ComponentActivity() {
     private val SubjectViewModel by viewModels<SubjectViewModel>()
     private val ProfileViewModel by viewModels<ProfileViewModel>()
+    private  val GroupViewModel by viewModels<GroupViewModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             Surface(color = MaterialTheme.colors.background) {
-                ScreenMain(subjectsViewModel=SubjectViewModel, profileViewModel = ProfileViewModel)
+                ScreenMain(subjectsViewModel=SubjectViewModel, profileViewModel = ProfileViewModel, groupViewModel = GroupViewModel)
             }
         }
     }
 }
 
 @Composable
-fun ScreenMain(subjectsViewModel: SubjectViewModel, profileViewModel: ProfileViewModel) {
+fun ScreenMain(subjectsViewModel: SubjectViewModel, profileViewModel: ProfileViewModel, groupViewModel: GroupViewModel) {
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = Routes.Login.route) {
         // First route : Login
@@ -58,11 +60,11 @@ fun ScreenMain(subjectsViewModel: SubjectViewModel, profileViewModel: ProfileVie
         // Another Route : Join group
         composable(Routes.JoinGroup.route) {
             // Register Screen
-            JoinGroup(navController = navController)
+            JoinGroup(navController = navController, profileViewModel,groupViewModel)
         }
         // Another Route : Create group
         composable(Routes.CreateGroup.route) {
-            CreateGroup(navController = navController, profileViewModel = profileViewModel)
+            CreateGroup(navController = navController, profileViewModel = profileViewModel, groupViewModel)
 
 
         }
@@ -87,7 +89,7 @@ fun ScreenMain(subjectsViewModel: SubjectViewModel, profileViewModel: ProfileVie
         // Another Route : CreateQueue
         composable(Routes.CreateQueue.route) {
             // Register Screen
-            CreateQueue(navController = navController, addSubject={subjectsViewModel.addSubject(it)})
+            CreateQueue(navController = navController, addSubject={subjectsViewModel.addSubject(it)}, profileViewModel = profileViewModel, groupViewModel = groupViewModel)
         }
 
     }

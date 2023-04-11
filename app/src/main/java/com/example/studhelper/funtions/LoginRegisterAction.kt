@@ -3,6 +3,7 @@ package com.example.studhelper.funtions
 import androidx.compose.material.ScaffoldState
 import androidx.compose.runtime.MutableState
 import androidx.navigation.NavController
+import com.example.studhelper.data.Group
 import com.example.studhelper.data.Profile
 import com.example.studhelper.screens.loginRegisterFrames.Routes
 import com.example.studhelper.screens.mainFrames.student.profile.ProfileViewModel
@@ -36,7 +37,9 @@ fun register(
     val currentProfile = (Profile(
         name = "${name.value} ${surname.value}",
         isu = isu.value,
-        password = password.value
+        password = password.value,
+        admin = false,
+        group = Group(name="", code="")
     ))
     profiles.forEach { item ->
         if (item.isu == currentProfile.isu) {

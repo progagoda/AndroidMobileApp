@@ -16,18 +16,19 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.studhelper.components.CustomButton
 import com.example.studhelper.components.Input
+import com.example.studhelper.screens.mainFrames.student.myGroup.GroupViewModel
 import com.example.studhelper.screens.mainFrames.student.profile.ProfileViewModel
 
 @Composable
 fun CreateGroup(
     navController: NavHostController,
     profileViewModel: ProfileViewModel,
+    groupViewModel: GroupViewModel
 ) {
     val groupNumber = rememberSaveable { mutableStateOf("") }
     fun joinGroup() {
         val profileObject = profileViewModel.currentProfile
-        profileViewModel.addGroup(profileObject, groupNumber.value)
-        profileViewModel.currentProfile.group = groupNumber.value
+        groupViewModel.addGroup(profileObject, groupNumber.value)
     }
 
     fun redirect() {

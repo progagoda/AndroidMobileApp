@@ -16,9 +16,13 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.studhelper.components.CustomButton
 import com.example.studhelper.components.Input
+import com.example.studhelper.screens.mainFrames.student.myGroup.GroupViewModel
+import com.example.studhelper.screens.mainFrames.student.profile.ProfileViewModel
+
 //TODO сдедать реализацию присоединения к группе в виде соотв функций
 @Composable
-fun JoinGroup(navController: NavHostController){
+fun JoinGroup(navController: NavHostController,profileViewModel: ProfileViewModel,
+groupViewModel: GroupViewModel){
     var groupCode = rememberSaveable { mutableStateOf("") }
     Column(
         modifier = Modifier
@@ -34,6 +38,6 @@ fun JoinGroup(navController: NavHostController){
         verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically)
     ) {
         Input(name = "Group code", text=groupCode.value, onTextChange = {groupCode.value=it})
-        CustomButton(action = {navController.navigate(Routes.Queue.route)}, name ="Join")
+        CustomButton(action = {groupViewModel.setGroup(profileViewModel.currentProfile,groupCode.value, navController)}, name ="Join")
     }
 }

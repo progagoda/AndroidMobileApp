@@ -31,7 +31,7 @@ fun Queue(
     subjects: List<Subject>,
     deleteSubject: (Subject) -> Unit
 ) {
-    var admin = true;// depends on user usual student or admin of group
+    val admin = profileViewModel.currentProfile.admin;// depends on user usual student or admin of group
     Scaffold(
         bottomBar = { BottomMenu(navController = navController, currentPage = "Очереди") },
         content = { padding -> // We have to pass the scaffold inner padding to our content. That's why we use Box.

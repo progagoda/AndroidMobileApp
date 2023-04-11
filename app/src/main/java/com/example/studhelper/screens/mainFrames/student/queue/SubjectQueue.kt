@@ -22,12 +22,15 @@ import androidx.navigation.NavController
 import com.example.studhelper.InterFamily
 import com.example.studhelper.data.Subject
 import com.example.studhelper.screens.loginRegisterFrames.Routes
+import com.example.studhelper.screens.mainFrames.student.myGroup.GroupViewModel
+import com.example.studhelper.screens.mainFrames.student.profile.ProfileViewModel
 import kotlinx.coroutines.launch
 
 @Composable
 fun SubjectQueue(
     navController: NavController,
     addSubject: (Subject) -> Unit,
+    profileViewModel: ProfileViewModel,
 ) {
     var input = remember {
         mutableStateOf("")
@@ -87,7 +90,7 @@ fun SubjectQueue(
                                 message = "Поле не может быть пустым")
                         }
                     } else {
-                        addSubject(Subject(name = input.value, group = "P33131"))
+                        addSubject(Subject(name = input.value, profileViewModel.currentProfile, profileViewModel.profileList(profileViewModel.currentProfile.group)))
                         navController.navigate(Routes.Queue.route)
                     }
                 },
