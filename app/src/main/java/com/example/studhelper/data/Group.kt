@@ -29,6 +29,5 @@ object GroupsRepo {
     fun addGroup(group: Group) {
         val groups = groups() as MutableList<Group>
         groups.add(group)
-
     }
 }

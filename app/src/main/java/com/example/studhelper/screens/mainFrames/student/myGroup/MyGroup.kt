@@ -1,6 +1,7 @@
 package com.example.studhelper.screens.mainFrames.student.myGroup
 
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -22,11 +23,10 @@ import com.example.studhelper.data.Profile
 import com.example.studhelper.funtions.loadGroup
 import com.example.studhelper.screens.mainFrames.student.profile.ProfileViewModel
 
+@SuppressLint("SuspiciousIndentation")
 @Composable
-fun MyGroup(navController: NavHostController,
-profiles: List<Profile>, profileViewModel: ProfileViewModel) {
-  val subject = mutableListOf<Profile>()
-  loadGroup(profiles,profileViewModel,subject)
+fun MyGroup(navController: NavHostController, profileViewModel: ProfileViewModel) {
+  val profile = loadGroup(profileViewModel)
     Scaffold(
         bottomBar = { BottomMenu(navController = navController, currentPage = "Моя группа") },
         content = {
@@ -45,7 +45,7 @@ profiles: List<Profile>, profileViewModel: ProfileViewModel) {
                         color = Color.White
                     )
                 }
-                itemsIndexed(subject) { index, item ->
+                itemsIndexed(profile) { index, item ->
                     GroupmateCard(image = item.avatar, name = item.name )
                 }
             }

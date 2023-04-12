@@ -20,6 +20,7 @@ import com.example.studhelper.screens.mainFrames.student.myGroup.GroupViewModel
 import com.example.studhelper.screens.mainFrames.student.profile.ProfileViewModel
 import com.example.studhelper.screens.mainFrames.student.queue.CreateQueue
 import com.example.studhelper.screens.mainFrames.student.queue.Queue
+import com.example.studhelper.screens.mainFrames.student.queue.SubjectQueue
 import com.example.studhelper.screens.mainFrames.student.queue.SubjectViewModel
 
 //TODO cделать фрейм записи и отписи от каждого очереди
@@ -73,8 +74,7 @@ fun ScreenMain(subjectsViewModel: SubjectViewModel, profileViewModel: ProfileVie
             Queue(
                 navController = navController,
                 profileViewModel= profileViewModel,
-                subjectsViewModel.subjects,
-            ) { subjectsViewModel.deleteSubject(it) }
+                {subjectsViewModel.deleteSubject(it)}, subjectsViewModel)
         }
         // Another Route : Profile
         composable(NavigationBar.Profile.route) {
@@ -84,12 +84,15 @@ fun ScreenMain(subjectsViewModel: SubjectViewModel, profileViewModel: ProfileVie
         // Another Route : MyGroup
         composable(NavigationBar.MyGroup.route) {
             // Register Screen
-            MyGroup(navController = navController, profiles = profileViewModel.profiles, profileViewModel=profileViewModel)
+            MyGroup(navController = navController, profileViewModel=profileViewModel)
         }
         // Another Route : CreateQueue
         composable(Routes.CreateQueue.route) {
             // Register Screen
             CreateQueue(navController = navController, addSubject={subjectsViewModel.addSubject(it)}, profileViewModel = profileViewModel, groupViewModel = groupViewModel)
+        }
+        composable(Routes.SubjectQueue.route){
+            SubjectQueue(navController = navController, subjectViewModel = subjectsViewModel, profileViewModel = profileViewModel)
         }
 
     }

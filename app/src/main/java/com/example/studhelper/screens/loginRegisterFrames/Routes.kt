@@ -12,4 +12,5 @@ sealed class Routes(val route: String) {
     object JoinGroup: Routes("joinGroup")
     object Queue: Routes("queue")
     object CreateQueue: Routes("createQueue")
+    object SubjectQueue: Routes("subjectQueue")
 }

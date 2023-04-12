@@ -5,8 +5,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Scaffold
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -16,6 +20,9 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.studhelper.components.CustomButton
 import com.example.studhelper.components.Input
+import com.example.studhelper.funtions.createGroup
+import com.example.studhelper.funtions.joinGroup
+import com.example.studhelper.funtions.redirect
 import com.example.studhelper.screens.mainFrames.student.myGroup.GroupViewModel
 import com.example.studhelper.screens.mainFrames.student.profile.ProfileViewModel
 
@@ -26,14 +33,12 @@ fun CreateGroup(
     groupViewModel: GroupViewModel
 ) {
     val groupNumber = rememberSaveable { mutableStateOf("") }
-    fun joinGroup() {
-        val profileObject = profileViewModel.currentProfile
-        groupViewModel.addGroup(profileObject, groupNumber.value)
-    }
-
-    fun redirect() {
-        navController.navigate(Routes.Queue.route)
-    }
+    val scaffoldState = rememberScaffoldState()
+    val coroutineScope = rememberCoroutineScope()
+    Scaffold(
+        modifier = Modifier,
+        scaffoldState = scaffoldState // attaching `scaffoldState` to the `Scaffold`
+    ) {
     Column(
         modifier = Modifier
             .background(
@@ -53,6 +58,7 @@ fun CreateGroup(
             name = "Group number",
             text = groupNumber.value,
             onTextChange = { groupNumber.value = it })
-        CustomButton(actionArr = arrayOf(::joinGroup, ::redirect), name = "Create")
+        CustomButton(action={ createGroup(profileViewModel,groupViewModel,groupNumber,navController,scaffoldState,coroutineScope) }, name = "Create")
+    }
     }
 }

@@ -16,14 +16,24 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.studhelper.InterFamily
+import com.example.studhelper.data.Profile
 import com.example.studhelper.data.Subject
+import com.example.studhelper.funtions.goToQueue
+import com.example.studhelper.funtions.loadGroup
+import com.example.studhelper.funtions.redirect
+import com.example.studhelper.screens.mainFrames.student.myGroup.GroupViewModel
+import com.example.studhelper.screens.mainFrames.student.profile.ProfileViewModel
+import com.example.studhelper.screens.mainFrames.student.queue.SubjectViewModel
 
 
 @Composable
-fun SubjectCard(subject: Subject, currentCount: Int, allCount: Int, admin: Boolean, deleteSubject: (Subject)->Unit) {
+fun SubjectCard(subject: Subject, deleteSubject: (Subject)->Unit, subjectViewModel: SubjectViewModel, profileViewModel: ProfileViewModel, navController: NavController) {
     var color = Color.Green
-    var result = currentCount.toDouble() / allCount
+    val allCount = loadGroup(profileViewModel).size
+    val currentCount = subject.students.size
+    val result = currentCount.toDouble()/allCount.toDouble()
     if (result >= 0.5) {
         color = Color(0xFFB5B902)
     }
@@ -32,7 +42,7 @@ fun SubjectCard(subject: Subject, currentCount: Int, allCount: Int, admin: Boole
     }
     Card(
         elevation = 10.dp,
-        modifier = Modifier.padding(vertical = 5.dp),
+        modifier = Modifier.padding(vertical = 5.dp).clickable { goToQueue(subject,navController,subjectViewModel) },
         shape = RoundedCornerShape(15)/* TODO Здесь нужно здесь отдельный фрейм каждой очереди, создать объект очередь и передавать его*/
     ) {
         Box(
@@ -89,7 +99,7 @@ fun SubjectCard(subject: Subject, currentCount: Int, allCount: Int, admin: Boole
                                 textAlign = TextAlign.Center
                             )
                         }
-                            if (admin) {
+                            if (profileViewModel.currentProfile.admin) {
                                 Column(modifier = Modifier.clickable { deleteSubject(subject) }) {
                                 CustomButton(
                                     action = {deleteSubject(subject)},

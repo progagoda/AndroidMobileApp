@@ -96,8 +96,3 @@ fun logOut(profileViewModel: ProfileViewModel, navController: NavController){
     navController.navigate(Routes.Login.route)
 }
 // TODO сделать проверку на есть ли такой код группы, если да то присоединить профиль к этой группе
-
-
-fun joinGroup(){
-
-}

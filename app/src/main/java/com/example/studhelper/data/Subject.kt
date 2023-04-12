@@ -41,30 +41,6 @@ private val subjectsDB = listOf<Subject>(
                 "12345",
                 false
             ),
-            Profile(
-                "Артем Шабалович",
-                GroupsRepo.getGroups()[1],
-                R.drawable.avatar_bad_breaking,
-                "285383",
-                "12345",
-                false
-            ),
-            Profile(
-                "Артем Бритковскович",
-                GroupsRepo.getGroups()[1],
-                R.drawable.avatar_bad_breaking,
-                "285385",
-                "12345",
-                false
-            ),
-            Profile(
-                "Артем Артемович",
-                GroupsRepo.getGroups()[1],
-                R.drawable.avatar_bad_breaking,
-                "285386",
-                "12345",
-                false
-            )
         )
     )    )
 
@@ -78,5 +54,4 @@ private fun subjects(): List<Subject> {
     }
     object SubjectsRepo {
         fun getSubjects(): List<Subject> = subjects()
-
     }

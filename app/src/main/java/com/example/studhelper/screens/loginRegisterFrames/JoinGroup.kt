@@ -5,8 +5,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Scaffold
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -16,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.studhelper.components.CustomButton
 import com.example.studhelper.components.Input
+import com.example.studhelper.funtions.joinGroup
 import com.example.studhelper.screens.mainFrames.student.myGroup.GroupViewModel
 import com.example.studhelper.screens.mainFrames.student.profile.ProfileViewModel
 
@@ -24,20 +28,34 @@ import com.example.studhelper.screens.mainFrames.student.profile.ProfileViewMode
 fun JoinGroup(navController: NavHostController,profileViewModel: ProfileViewModel,
 groupViewModel: GroupViewModel){
     var groupCode = rememberSaveable { mutableStateOf("") }
-    Column(
-        modifier = Modifier
-            .background(brush = Brush.linearGradient(
-                colors = listOf(
-                    Color(0xFF262A34),
-                    Color(0xFF26264C)
-                )
-            ))
-            .fillMaxSize()
-            .padding(10.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically)
+    val scaffoldState = rememberScaffoldState()
+    val coroutineScope = rememberCoroutineScope()
+    Scaffold(
+        modifier = Modifier,
+        scaffoldState = scaffoldState // attaching `scaffoldState` to the `Scaffold`
     ) {
-        Input(name = "Group code", text=groupCode.value, onTextChange = {groupCode.value=it})
-        CustomButton(action = {groupViewModel.setGroup(profileViewModel.currentProfile,groupCode.value, navController)}, name ="Join")
+        Column(
+            modifier = Modifier
+                .background(
+                    brush = Brush.linearGradient(
+                        colors = listOf(
+                            Color(0xFF262A34),
+                            Color(0xFF26264C)
+                        )
+                    )
+                )
+                .fillMaxSize()
+                .padding(10.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically)
+        ) {
+            Input(
+                name = "Group code",
+                text = groupCode.value,
+                onTextChange = { groupCode.value = it })
+            CustomButton(action = {
+               joinGroup(profileViewModel,groupViewModel,groupCode,navController,scaffoldState,coroutineScope)
+            }, name = "Join")
+        }
     }
 }

@@ -11,14 +11,13 @@ import com.example.studhelper.data.SubjectsRepo
 //TODO сделать методы записи и отписи от очереди
 class SubjectViewModel : ViewModel() {
     var subjects by mutableStateOf(SubjectsRepo.getSubjects())
+    var currentSubject by mutableStateOf(subjects[0])
     fun addSubject(subject: Subject) {
-        if (subject.name == "") {
-        } else {
+        if (subject.name != "") {
             subjects = subjects + listOf(subject)
             println(subjects)
         }
     }
-
     fun deleteSubject(subject: Subject) {
         subjects = subjects.toMutableList().also {
             it.remove(subject)

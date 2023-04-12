@@ -47,5 +47,15 @@ fun deleteQueue(currentProfile: Profile,scaffoldState: ScaffoldState, subject: S
         }
     }
 }
+fun goToQueue(subject: Subject, navController: NavController, subjectViewModel: SubjectViewModel){
+    subjectViewModel.currentSubject=subject
+    navController.navigate(Routes.SubjectQueue.route)
+}
+fun checkStateStudent(subject:Subject, profile: Profile): Boolean {
+    subject.students.forEach { item->
+        if(item==profile) return true
+    }
+    return false
+}
 fun subscribeQueue(){}
 fun unSubscribeQueue(){}
