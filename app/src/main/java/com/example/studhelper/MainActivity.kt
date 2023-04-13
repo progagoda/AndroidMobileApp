@@ -56,7 +56,7 @@ fun ScreenMain(subjectsViewModel: SubjectViewModel, profileViewModel: ProfileVie
 
         composable(Routes.ChooseGroup.route) {
             // Register Screen
-            ChooseGroup(navController = navController, profileViewModel = profileViewModel)
+            ChooseGroup(navController = navController)
         }
         // Another Route : Join group
         composable(Routes.JoinGroup.route) {
@@ -84,7 +84,7 @@ fun ScreenMain(subjectsViewModel: SubjectViewModel, profileViewModel: ProfileVie
         // Another Route : MyGroup
         composable(NavigationBar.MyGroup.route) {
             // Register Screen
-            MyGroup(navController = navController, profileViewModel=profileViewModel)
+            MyGroup(navController = navController, profileViewModel=profileViewModel, groupViewModel)
         }
         // Another Route : CreateQueue
         composable(Routes.CreateQueue.route) {

@@ -18,6 +18,7 @@ class SubjectViewModel : ViewModel() {
             println(subjects)
         }
     }
+
     fun deleteSubject(subject: Subject) {
         subjects = subjects.toMutableList().also {
             it.remove(subject)
@@ -26,19 +27,17 @@ class SubjectViewModel : ViewModel() {
     }
 
     fun subscribe(profile: Profile, subject: Subject) {
-        subjects.forEach { item ->
-            if (item == subject) item.students += listOf<Profile>(profile)
+        subjects = subjects.toMutableList().also {
+            subject.students += listOf(profile)
+            println(subjects)
         }
     }
 
     fun unsubscribe(profile: Profile, subject: Subject) {
-        subjects.forEach { item ->
-            if (item == subject) {
-                item.students.forEach { profileItem ->
-//
-                }
+        subjects = subjects.toMutableList().also {
+            subject.students -= listOf(profile)
+            println(subjects)
 
-            }
         }
     }
 }

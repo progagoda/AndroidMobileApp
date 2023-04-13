@@ -1,9 +1,14 @@
 package com.example.studhelper.components
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
+import androidx.compose.material.SnackbarDefaults.backgroundColor
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -23,9 +28,11 @@ fun BottomMenu(navController: NavController, currentPage: String){
         NavigationBar.Profile
     )
     BottomNavigation(
-        backgroundColor = Color(0XFF181A20),
-        contentColor = Color.White
+        modifier= Modifier.border(2.dp,Color.Black, RoundedCornerShape(2.dp)).padding(2.dp),
+        backgroundColor = Color(0xFF121224),
+        contentColor = Color.White,
     ) {
+
         items.forEach { item ->
             BottomNavigationItem(
                 icon = { Icon(painterResource(id = item.icon), contentDescription = item.title, modifier = Modifier.size(30.dp) ) },

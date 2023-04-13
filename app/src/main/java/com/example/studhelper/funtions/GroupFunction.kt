@@ -69,11 +69,13 @@ fun joinGroup(
 
 fun deleteGroup(
     profileViewModel: ProfileViewModel,
-    groupViewModel: GroupViewModel
+    groupViewModel: GroupViewModel,
+    navController: NavHostController
 ) {
     if (profileViewModel.currentProfile.admin) {
         groupViewModel.groups.forEach { item ->
             if (item == profileViewModel.currentProfile.group) groupViewModel.deleteGroup(item)
         }
+        navController.navigate(Routes.ChooseGroup.route)
     }
 }

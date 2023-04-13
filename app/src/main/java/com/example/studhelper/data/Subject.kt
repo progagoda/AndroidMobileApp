@@ -13,7 +13,7 @@ data class Subject(
     var students: List<Profile>
 ) : Parcelable
 
-private val subjectsDB = listOf<Subject>(
+private val subjectsDB = listOf(
     Subject(
         "Методы и средства программной инженерии",
         Profile(

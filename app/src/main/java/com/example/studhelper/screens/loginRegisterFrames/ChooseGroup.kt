@@ -16,8 +16,7 @@ import com.example.studhelper.screens.mainFrames.student.profile.ProfileViewMode
 
 @Composable
 fun ChooseGroup(
-    navController: NavHostController,
-    profileViewModel: ProfileViewModel,
+    navController: NavHostController
 ) {
     Column(
         modifier = Modifier

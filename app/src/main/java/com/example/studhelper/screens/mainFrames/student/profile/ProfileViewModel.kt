@@ -5,9 +5,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.navigation.NavHostController
 import com.example.studhelper.data.Group
 import com.example.studhelper.data.Profile
 import com.example.studhelper.data.ProfilesRepo
+import com.example.studhelper.screens.loginRegisterFrames.Routes
 import com.example.studhelper.screens.mainFrames.student.myGroup.GroupViewModel
 
 //TODO добавить метод проверки админ это или нет
@@ -33,5 +35,9 @@ class ProfileViewModel:ViewModel(){
             }
         }
         return groupList
+    }
+    fun logOutGroup(profileViewModel: ProfileViewModel, navHostController: NavHostController){
+        profileViewModel.currentProfile.group = Group(name = "",code="")
+        navHostController.navigate(Routes.ChooseGroup.route)
     }
 }

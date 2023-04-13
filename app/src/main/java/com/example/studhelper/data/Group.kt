@@ -6,7 +6,7 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class Group(
-    val name: String,
+    var name: String,
     val code: String,
 ) : Parcelable
 

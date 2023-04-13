@@ -20,11 +20,9 @@ import com.example.studhelper.InterFamily
 import com.example.studhelper.components.BottomMenu
 import com.example.studhelper.components.CustomButton
 import com.example.studhelper.components.SubjectCard
-import com.example.studhelper.data.Profile
 import com.example.studhelper.data.Subject
 import com.example.studhelper.funtions.loadQueue
 import com.example.studhelper.screens.loginRegisterFrames.Routes
-import com.example.studhelper.screens.mainFrames.student.myGroup.GroupViewModel
 import com.example.studhelper.screens.mainFrames.student.profile.ProfileViewModel
 
 @Composable
@@ -32,11 +30,11 @@ fun Queue(
     navController: NavHostController,
     profileViewModel: ProfileViewModel,
     deleteSubject: (Subject) -> Unit,
-   subjectViewModel: SubjectViewModel
+    subjectViewModel: SubjectViewModel
 ) {
-    val admin = profileViewModel.currentProfile.admin;// depends on user usual student or admin of group
+    val admin =
+        profileViewModel.currentProfile.admin;// depends on user usual student or admin of group
     val subjects = loadQueue(profileViewModel, subjectViewModel)
-    println("Я во фрейме очередь $subjects")
     Scaffold(
         bottomBar = { BottomMenu(navController = navController, currentPage = "Очереди") },
         content = { padding -> // We have to pass the scaffold inner padding to our content. That's why we use Box.
@@ -60,7 +58,7 @@ fun Queue(
                         )
                         if (admin) {
                             CustomButton(
-                                action = {navController.navigate(Routes.CreateQueue.route)},
+                                action = { navController.navigate(Routes.CreateQueue.route) },
                                 name = "Создать очередь",
                                 color = Color.Green,
                                 height = 40.dp,
