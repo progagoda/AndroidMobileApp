@@ -3,9 +3,9 @@ package com.example.studhelper.funtions
 import androidx.compose.material.ScaffoldState
 import androidx.compose.runtime.MutableState
 import androidx.navigation.NavHostController
-import com.example.studhelper.data.EnterGroupRequest
+import com.example.studhelper.data.DeleteGroupRequest
 import com.example.studhelper.data.GroupCreateRequest
-import com.example.studhelper.retrofit.UserAPI
+import com.example.studhelper.retrofit.GroupAPI
 import com.example.studhelper.screens.loginRegisterFrames.Routes
 import com.example.studhelper.screens.mainFrames.student.myGroup.GroupViewModel
 import com.example.studhelper.screens.mainFrames.student.profile.ProfileViewModel
@@ -31,7 +31,7 @@ class GroupAction {
         .addConverterFactory(GsonConverterFactory.create())
         .client(client)
         .build()
-    val userAPI: UserAPI = retrofit.create(UserAPI::class.java)
+    val groupAPI: GroupAPI = retrofit.create(GroupAPI::class.java)
 
     fun createGroup(
         profileViewModel: ProfileViewModel,
@@ -50,11 +50,9 @@ class GroupAction {
             return
         }
         val groupCreateRequest: GroupCreateRequest = GroupCreateRequest(groupNumber.value)
-        userAPI.createGroup(groupCreateRequest).enqueue(object : Callback<Void> {
+        groupAPI.createGroup(groupCreateRequest).enqueue(object : Callback<Void> {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
                 if (response.isSuccessful) {
-                    TODO("Кажется, что использование GroupViewModel - херня какая-то")
-//                    groupViewModel.addGroup(profileViewModel.currentProfile, groupNumber.value)
                     profileViewModel.currentProfile.admin = true
                     navController.navigate(Routes.Queue.route)
                 }
@@ -79,58 +77,14 @@ class GroupAction {
         })
     }
 
-
-    // TODO("Узнать по поводу group code и сгладить несостыковки с backend")
-    fun joinGroup(
-        profileViewModel: ProfileViewModel,
-        groupCode: MutableState<String>,
-        navController: NavHostController,
-        scaffoldState: ScaffoldState,
-        coroutineScope: CoroutineScope
-    ) {
-        if (groupCode.value == "") {
-            coroutineScope.launch {
-                scaffoldState.snackbarHostState.showSnackbar(
-                    message = "Поле должно быть заполнено"
-                )
-            }
-            return
-        }
-        val enterGroupRequest: EnterGroupRequest = EnterGroupRequest(
-            profileViewModel.currentProfile.isu.toInt(),
-            profileViewModel.currentProfile.group.name.toInt()
-        )
-        userAPI.enterGroup(enterGroupRequest.user_id, enterGroupRequest.group_id)
-            .enqueue(object : Callback<Void> {
-                override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                    if (response.isSuccessful) {
-                        TODO("Непонятно, что делать на фронте при успешном подключении к группе на бэке")
-                    }
-                    else {
-                        val errorMessage: String = if (response.code() == 400)
-                            "Invalid data"
-                        else
-                            "Unknown error"
-                        coroutineScope.launch {
-                            scaffoldState.snackbarHostState.showSnackbar(
-                                message = errorMessage
-                            )
-                        }
-                    }
-                }
-
-                override fun onFailure(call: Call<Void>, t: Throwable) {
-                    TODO("Not yet implemented")
-                }
-            })
-    }
-
     fun deleteGroup(
         profileViewModel: ProfileViewModel,
         groupViewModel: GroupViewModel,
         navController: NavHostController
     ) {
-        TODO("Уточнить у Артёма, что делать в этом случае")
+        val deleteGroupRequest: DeleteGroupRequest = DeleteGroupRequest(
+            profileViewModel.currentProfile.group.name.toInt()
+        )
+        TODO("Нужно передавать userId и groupId, т.к. на бэке нужно проверять наличие прав админа, чтобы удалять")
     }
-
 }

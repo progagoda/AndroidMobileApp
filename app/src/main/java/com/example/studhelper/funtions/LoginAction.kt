@@ -9,6 +9,7 @@ import com.example.studhelper.data.Profile
 import com.example.studhelper.retrofit.UserAPI
 import com.example.studhelper.screens.loginRegisterFrames.Routes
 import com.example.studhelper.screens.mainFrames.student.profile.ProfileViewModel
+import com.example.studhelper.utils.redirect
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
@@ -18,11 +19,6 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-
-
-fun redirect(url: () -> Unit) {
-    url()
-}
 
 
 class LoginAction() {
