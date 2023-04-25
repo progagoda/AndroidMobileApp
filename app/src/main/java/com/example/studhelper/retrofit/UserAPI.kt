@@ -1,9 +1,10 @@
 package com.example.studhelper.retrofit
 
+import com.example.studhelper.data.ExitGroupRequest
+import com.example.studhelper.data.GetAllQueueRequest
 import com.example.studhelper.data.GroupCreateRequest
 import com.example.studhelper.data.LoginRequest
 import com.example.studhelper.data.Profile
-import com.example.studhelper.data.Test
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -18,18 +19,16 @@ interface UserAPI {
     @POST("register")
     fun register(@Body profile: Profile): Call<Void>
 
-    @POST("groups")
-    fun createGroup(@Body groupCreateRequest: GroupCreateRequest): Call<Void>
-
     @POST("{user_id}/groups/{group_id}")
     fun enterGroup(@Path("user_id") userId: Int, @Path("group_id") groupId: Int): Call<Void>
 
     @DELETE("{user_id}/groups/{group_id}")
-    fun exitGroup(@Path("user_id") userId: Int, @Path("group_id") groupId: Int): Call<Void>
+    fun exitGroup(
+        @Path("user_id") userId: Int,
+        @Path("group_id") groupId: Int,
+        @Body exitGroupRequest: ExitGroupRequest
+    ): Call<Void>
 
     @GET("logout")
     fun logoutUser(@Body userId: Int): Call<Void>
-
-    @GET("products/1")
-    fun getchtoto(): Call<Test>
 }

@@ -7,12 +7,10 @@ import com.example.studhelper.data.Group
 import com.example.studhelper.data.Profile
 import com.example.studhelper.screens.loginRegisterFrames.Routes
 import com.example.studhelper.screens.mainFrames.student.profile.ProfileViewModel
+import com.example.studhelper.utils.redirect
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-fun redirect(url: () -> Unit) {
-    url()
-}
 
 fun register(
     isu: MutableState<String>,
