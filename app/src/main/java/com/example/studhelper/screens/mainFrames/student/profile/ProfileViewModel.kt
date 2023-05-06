@@ -20,15 +20,18 @@ class ProfileViewModel:ViewModel(){
         if(profile.name=="" || profile.password.equals(null)|| profile.isu.equals(null)){
         }
         else {
+            //TODO здесь мы делаем запрос к бд на создание профиля
             profiles = profiles + listOf(profile)
             println(profiles)
         }
     }
     fun setProfile(profile: Profile){
+        //TODO это оставляем на фронте, пусть текущий пользователь будет храниться здесь
        currentProfile= profile;
     }
     fun profileList(group: Group): MutableList<Profile> {
         val groupList = mutableListOf<Profile>()
+        //TODO тут должна быть выгрузка профилей по группе
         profiles.forEach { item->
             if(item.group==group){
                 groupList+= listOf(item)
@@ -37,6 +40,7 @@ class ProfileViewModel:ViewModel(){
         return groupList
     }
     fun logOutGroup(profileViewModel: ProfileViewModel, navHostController: NavHostController){
+        //TODO здесь мы делаем запрос к бэку на удаление из группы конкретного пользователя
         profileViewModel.currentProfile.group = Group(name = "",code="")
         navHostController.navigate(Routes.ChooseGroup.route)
     }

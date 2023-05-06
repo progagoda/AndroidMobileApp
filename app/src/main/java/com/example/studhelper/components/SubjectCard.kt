@@ -43,7 +43,7 @@ fun SubjectCard(subject: Subject, deleteSubject: (Subject)->Unit, subjectViewMod
     Card(
         elevation = 10.dp,
         modifier = Modifier.padding(vertical = 5.dp).clickable { goToQueue(subject,navController,subjectViewModel) },
-        shape = RoundedCornerShape(15)/* TODO Здесь нужно здесь отдельный фрейм каждой очереди, создать объект очередь и передавать его*/
+        shape = RoundedCornerShape(15)
     ) {
         Box(
             modifier = Modifier.background(

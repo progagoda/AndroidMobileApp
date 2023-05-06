@@ -19,15 +19,12 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.studhelper.components.CustomButton
 import com.example.studhelper.components.Input
-import com.example.studhelper.data.Profile
-import com.example.studhelper.funtions.register
+import com.example.studhelper.funtions.LoginAction
 import com.example.studhelper.screens.mainFrames.student.profile.ProfileViewModel
 
 @Composable
 fun Register(
     navController: NavHostController,
-    profiles: List<Profile>,
-    createProfile: (Profile) -> Unit,
     profileViewModel: ProfileViewModel
 ) {
     var isu = rememberSaveable { mutableStateOf("") }
@@ -60,17 +57,15 @@ fun Register(
             Input(name = "Password", text = password.value, onTextChange = { password.value = it })
             CustomButton(
                 action = {
-                    register(
+                    LoginAction().register(
                         isu,
                         name,
                         surname,
                         password,
-                        profiles,
                         scaffoldState,
                         coroutineScope,
-                        createProfile,
+                        navController,
                         profileViewModel,
-                        navController
                     )
                 }, name = "Register"
             )

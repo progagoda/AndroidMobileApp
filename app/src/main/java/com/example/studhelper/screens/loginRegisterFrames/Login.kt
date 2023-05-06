@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.studhelper.components.CustomButton
 import com.example.studhelper.components.Input
+import com.example.studhelper.funtions.LoginAction
 import com.example.studhelper.funtions.checkUser
 import com.example.studhelper.funtions.redirect
 import com.example.studhelper.screens.mainFrames.student.profile.ProfileViewModel
@@ -49,7 +50,7 @@ fun Login(navController: NavHostController, profileViewModel: ProfileViewModel) 
         ) {
             Input(name = "Login", text = login, onTextChange = { login = it })
             Input(name = "Password", text = password, onTextChange = { password = it })
-            CustomButton(action = {checkUser(login,password,profileViewModel,navController,coroutineScope, scaffoldState) }, name = "Login")
+            CustomButton(action = {LoginAction().checkUser(login,password,navController,coroutineScope, scaffoldState,profileViewModel) }, name = "Login")
             CustomButton(action = {redirect(urlReg)}, name = "Register")
         }
     }

@@ -10,9 +10,9 @@ import com.example.studhelper.screens.mainFrames.student.profile.ProfileViewMode
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-fun redirect(url: () -> Unit) {
-    url()
-}
+//fun redirect(url: () -> Unit) {
+//    url()
+//}
 
 fun register(
     isu: MutableState<String>,
@@ -95,4 +95,3 @@ fun logOut(profileViewModel: ProfileViewModel, navController: NavController){
     profileViewModel.currentProfile=profileViewModel.profiles[0]
     navController.navigate(Routes.Login.route)
 }
-// TODO сделать проверку на есть ли такой код группы, если да то присоединить профиль к этой группе

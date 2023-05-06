@@ -10,7 +10,6 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.studhelper.data.Profile
 import com.example.studhelper.screens.loginRegisterFrames.ChooseGroup
 import com.example.studhelper.screens.loginRegisterFrames.*
 import com.example.studhelper.screens.mainFrames.student.myGroup.MyGroup
@@ -49,8 +48,7 @@ fun ScreenMain(subjectsViewModel: SubjectViewModel, profileViewModel: ProfileVie
         // Another Route : Register
         composable(Routes.Register.route) {
             // Register Screen
-            Register(navController = navController, profiles = profileViewModel.profiles, createProfile = {profileViewModel.addProfile(it)},
-            profileViewModel=profileViewModel)
+            Register(navController = navController, profileViewModel=profileViewModel)
         }
         // Another Route : Choose group
 

@@ -15,48 +15,23 @@ import com.example.studhelper.screens.loginRegisterFrames.Routes
 
 class GroupViewModel : ViewModel() {
     var groups by mutableStateOf(GroupsRepo.getGroups())
-    fun getRandomString(): String {
-        val charset = "ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz0123456789"
-        return (1..10)
-            .map { charset.random() }
-            .joinToString("")
-    }
 
     fun findGroup(groupName: String) {
-        groups.forEach { item ->
-            if (item.name == groupName) return
-        }
+        //TODO получение группы по имени
     }
 
     fun addGroup(profile: Profile, group: String) {
-            profile.group = Group(group, getRandomString())
-            groups = groups + listOf(profile.group)
-            println(group)
+        //TODO создание группы по имени + ее админ текущий переданный пользователь
     }
 
-    fun getGroup(profile: Profile): MutableList<Group> {
-        val currentGroup = mutableListOf<Group>()
-        groups.forEach { item ->
-            if (item == profile.group) {
-                currentGroup += listOf(profile.group)
-            }
-        }
-        return currentGroup
+    fun getGroup(profile: Profile) {
+        //TODO получить группу конкретного пользователя
     }
 
-    fun setGroup(profile: Profile, code: String): Boolean {
-        groups.forEach { item ->
-            if (item.code == code) {
-                profile.group = item
-                return true
-            }
-        }
-        return false
+    fun setGroup(profile: Profile, code: String):Boolean {
+        //TODO задать группу по коду определенному пользователю
+        return true
     }
     fun deleteGroup(group: Group) {
-        groups = groups.toMutableList().also {
-            it.remove(group)
-            println(group)
         }
     }
-}

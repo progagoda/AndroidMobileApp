@@ -4,8 +4,6 @@ import android.os.Parcelable
 import com.example.studhelper.R
 import kotlinx.android.parcel.Parcelize
 
-//TODO добавить поле лист записавшихся студентов
-//TODO изменить тип пол group на объект
 @Parcelize
 data class Subject(
     val name: String,
@@ -13,36 +11,7 @@ data class Subject(
     var students: List<Profile>
 ) : Parcelable
 
-private val subjectsDB = listOf(
-    Subject(
-        "Методы и средства программной инженерии",
-        Profile(
-            "Артем Сергеевич",
-            GroupsRepo.getGroups()[0],
-            R.drawable.avatar_bad_breaking,
-            "285384",
-            "12345",
-            true
-        ),
-        listOf<Profile>(
-            Profile(
-                "Артем Ваховскович",
-                GroupsRepo.getGroups()[0],
-                R.drawable.avatar_bad_breaking,
-                "285381",
-                "12345",
-                false
-            ),
-            Profile(
-                "Артем Крисанович",
-                GroupsRepo.getGroups()[0],
-                R.drawable.avatar_bad_breaking,
-                "285382",
-                "12345",
-                false
-            ),
-        )
-    )    )
+private val subjectsDB = listOf<Subject>()
 
 
 private fun subjects(): List<Subject> {

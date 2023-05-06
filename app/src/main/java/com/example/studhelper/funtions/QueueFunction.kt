@@ -12,7 +12,6 @@ import com.example.studhelper.screens.mainFrames.student.queue.SubjectViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-//TODO реализовать функции создания, удаления, подписи, отписи от очереди
 fun createQueue(input: MutableState<String>, profileViewModel: ProfileViewModel, scaffoldState: ScaffoldState, groupViewModel: GroupViewModel,
                 coroutineScope: CoroutineScope, navController: NavController, addSubject: (Subject)->Unit
 ){

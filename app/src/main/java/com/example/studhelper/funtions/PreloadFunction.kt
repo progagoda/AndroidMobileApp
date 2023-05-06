@@ -6,7 +6,6 @@ import com.example.studhelper.screens.mainFrames.student.myGroup.GroupViewModel
 import com.example.studhelper.screens.mainFrames.student.profile.ProfileViewModel
 import com.example.studhelper.screens.mainFrames.student.queue.SubjectViewModel
 
-//TODO добавить функцию подрузки очередей текущего пользователя
 fun loadGroup(
     profileViewModel: ProfileViewModel,
 ): MutableList<Profile> {

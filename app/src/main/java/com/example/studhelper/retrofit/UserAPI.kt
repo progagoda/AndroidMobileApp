@@ -3,7 +3,7 @@ package com.example.studhelper.retrofit
 import com.example.studhelper.data.GroupCreateRequest
 import com.example.studhelper.data.LoginRequest
 import com.example.studhelper.data.Profile
-import com.example.studhelper.data.Test
+import junit.framework.Test
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.DELETE
