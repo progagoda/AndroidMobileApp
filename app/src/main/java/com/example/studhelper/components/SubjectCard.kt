@@ -1,5 +1,6 @@
 package com.example.studhelper.components
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -27,19 +28,18 @@ import com.example.studhelper.screens.mainFrames.student.myGroup.GroupViewModel
 import com.example.studhelper.screens.mainFrames.student.profile.ProfileViewModel
 import com.example.studhelper.screens.mainFrames.student.queue.SubjectViewModel
 
-
 @Composable
 fun SubjectCard(subject: Subject, deleteSubject: (Subject)->Unit, subjectViewModel: SubjectViewModel, profileViewModel: ProfileViewModel, navController: NavController) {
     var color = Color.Green
     val allCount = loadGroup(profileViewModel).size
     val currentCount = subject.students.size
-    val result = currentCount.toDouble()/allCount.toDouble()
-    if (result >= 0.5) {
-        color = Color(0xFFB5B902)
-    }
-    if (result >= 0.75) {
-        color = Color.Red
-    }
+    val result = currentCount.toDouble()/(allCount.toDouble())
+        if (result >= 0.5) {
+            color = Color(0xFFB5B902)
+        }
+        if (result >= 0.75) {
+            color = Color.Red
+        }
     Card(
         elevation = 10.dp,
         modifier = Modifier.padding(vertical = 5.dp).clickable { goToQueue(subject,navController,subjectViewModel) },
@@ -114,12 +114,14 @@ fun SubjectCard(subject: Subject, deleteSubject: (Subject)->Unit, subjectViewMod
                         }
                     }
                 }
-                LinearProgressIndicator(
-                    progress = result.toFloat(),
-                    modifier = Modifier.fillMaxWidth(),
-                    color = color,
-                    backgroundColor = Color.White
-                )
+                if (result != null) {
+                    LinearProgressIndicator(
+                        progress = result.toFloat(),
+                        modifier = Modifier.fillMaxWidth(),
+                        color = color,
+                        backgroundColor = Color.White
+                    )
+                }
             }
         }
     }

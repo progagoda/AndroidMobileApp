@@ -9,7 +9,7 @@ data class Group(
     val code: String,
 ) : Parcelable
 
-private val groupDB = listOf<Group>()
+private val groupDB = listOf<Group>(  Group("P33131", "123213"))
 
 private fun groups(): List<Group> {
     val groups = mutableListOf<Group>()

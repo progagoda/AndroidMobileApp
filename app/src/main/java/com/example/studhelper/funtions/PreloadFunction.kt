@@ -2,7 +2,6 @@ package com.example.studhelper.funtions
 
 import com.example.studhelper.data.Profile
 import com.example.studhelper.data.Subject
-import com.example.studhelper.screens.mainFrames.student.myGroup.GroupViewModel
 import com.example.studhelper.screens.mainFrames.student.profile.ProfileViewModel
 import com.example.studhelper.screens.mainFrames.student.queue.SubjectViewModel
 

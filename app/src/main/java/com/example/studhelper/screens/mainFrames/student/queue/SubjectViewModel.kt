@@ -30,7 +30,7 @@ class SubjectViewModel : ViewModel() {
     fun subscribe(profile: Profile, subject: Subject) {
         //TODO передаем бэку профиль и объект предмета на подпись на очередь
         subjects = subjects.toMutableList().also {
-            subject.students += listOf(profile)
+            subject.students = subject.students.plus(listOf(profile))
             println(subjects)
         }
     }
@@ -38,7 +38,7 @@ class SubjectViewModel : ViewModel() {
     fun unsubscribe(profile: Profile, subject: Subject) {
         //TODO передаем бэку профиль и объект предмета на отпись от очереди
         subjects = subjects.toMutableList().also {
-            subject.students -= listOf(profile)
+            subject.students = subject.students.minus(listOf(profile))
             println(subjects)
 
         }

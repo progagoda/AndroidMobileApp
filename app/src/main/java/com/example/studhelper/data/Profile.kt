@@ -12,7 +12,14 @@ data class Profile(
     val password: String,
     var admin: Boolean
 ) : Parcelable
-private val profilesDB = listOf<Profile>()
+private val profilesDB = listOf<Profile>( Profile(
+    "Артем Сергеевич",
+    GroupsRepo.getGroups()[0],
+    R.drawable.avatar_bad_breaking,
+    "285384",
+    "12345",
+    true
+))
 private fun profiles(): List<Profile>{
     val profiles = mutableListOf<Profile>()
     for ((_,profile) in profilesDB.withIndex()){

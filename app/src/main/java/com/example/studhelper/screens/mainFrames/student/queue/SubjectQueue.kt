@@ -68,13 +68,15 @@ fun SubjectQueue(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 items(count = 1) {
-                    Text(
-                        text = subjectViewModel.currentSubject.name,
-                        fontSize = 30.sp,
-                        fontFamily = InterFamily,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.White
-                    )
+                    subjectViewModel.currentSubject.name?.let { it1 ->
+                        Text(
+                            text = it1,
+                            fontSize = 30.sp,
+                            fontFamily = InterFamily,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White
+                        )
+                    }
                 }
                 itemsIndexed(subscribers) { index, item ->
                     GroupmateCard(image = item.avatar, name = item.name, profileViewModel)
