@@ -1,12 +1,11 @@
 package com.example.studhelper.funtions
 
 import androidx.compose.material.ScaffoldState
-import androidx.compose.runtime.MutableState
 import androidx.navigation.NavHostController
-import com.example.studhelper.data.EnterGroupRequest
-import com.example.studhelper.data.GroupCreateRequest
-import com.example.studhelper.data.GroupCreds
-import com.example.studhelper.retrofit.UserAPI
+import com.example.studhelper.data.CreateQueueRequest
+import com.example.studhelper.data.QueueList
+import com.example.studhelper.data.StudentsInQueueList
+import com.example.studhelper.retrofit.GroupAPI
 import com.example.studhelper.screens.mainFrames.student.myGroup.GroupViewModel
 import com.example.studhelper.screens.mainFrames.student.profile.ProfileViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -19,7 +18,7 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class GroupAction {
+class QueueAction {
     val interceptor = HttpLoggingInterceptor()
 
     init {
@@ -31,141 +30,151 @@ class GroupAction {
         .addConverterFactory(GsonConverterFactory.create())
         .client(client)
         .build()
-    val userAPI: UserAPI = retrofit.create(UserAPI::class.java)
+    val groupAPI: GroupAPI = retrofit.create(GroupAPI::class.java)
 
-    fun createGroup(
+    fun getAllQueues(
         profileViewModel: ProfileViewModel,
         groupViewModel: GroupViewModel,
-        groupNumber: MutableState<String>,
         navController: NavHostController,
         scaffoldState: ScaffoldState,
         coroutineScope: CoroutineScope
     ) {
-        if (groupNumber.value == "") {
-            coroutineScope.launch {
-                scaffoldState.snackbarHostState.showSnackbar(
-                    message = "Поле должно быть заполнено"
-                )
-            }
-            return
-        }
-        val groupCreateRequest: GroupCreateRequest = GroupCreateRequest(groupNumber.value)
-        userAPI.createGroup(groupCreateRequest).enqueue(object : Callback<GroupCreds> {
-            override fun onResponse(call: Call<GroupCreds>, response: Response<GroupCreds>) {
+        groupAPI.getAllQueues().enqueue(object: Callback<QueueList> {
+            override fun onResponse(call: Call<QueueList>, response: Response<QueueList>) {
                 if (response.isSuccessful) {
-                    val groupCreds = response.body()
+                    //
+                }
+                else {
+                    val errorMessage: String = "Unknown error"
+                    coroutineScope.launch {
+                        scaffoldState.snackbarHostState.showSnackbar(
+                            message = errorMessage
+                        )
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<QueueList>, t: Throwable) {
+                TODO("Not yet implemented")
+            }
+        })
+    }
+
+    fun createQueue(
+        queueName: String,
+        profileViewModel: ProfileViewModel,
+        groupViewModel: GroupViewModel,
+        navController: NavHostController,
+        scaffoldState: ScaffoldState,
+        coroutineScope: CoroutineScope
+    ) {
+        val createQueueRequest = CreateQueueRequest(queueName)
+        groupAPI.createQueue(createQueueRequest).enqueue(object: Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                if (response.isSuccessful) {
+                    //
+                }
+                else {
+                    val errorMessage: String = if (response.code() == 404)
+                        "User is not in the group"
+                    else
+                        "Unknown error"
+                    coroutineScope.launch {
+                        scaffoldState.snackbarHostState.showSnackbar(
+                            message = errorMessage
+                        )
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                TODO("Not yet implemented")
+            }
+        })
+    }
+
+    fun getQueue(
+        queueId: Int,
+        profileViewModel: ProfileViewModel,
+        groupViewModel: GroupViewModel,
+        navController: NavHostController,
+        scaffoldState: ScaffoldState,
+        coroutineScope: CoroutineScope
+    ) {
+        groupAPI.getQueue(queueId).enqueue(object: Callback<StudentsInQueueList> {
+            override fun onResponse(
+                call: Call<StudentsInQueueList>,
+                response: Response<StudentsInQueueList>
+            ) {
+                if (response.isSuccessful) {
+                    //
+                }
+                else {
+                    val errorMessage = "Unknown error"
+                    coroutineScope.launch {
+                        scaffoldState.snackbarHostState.showSnackbar(
+                            message = errorMessage
+                        )
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<StudentsInQueueList>, t: Throwable) {
+                TODO("Not yet implemented")
+            }
+        })
+    }
+
+    fun deleteQueue(
+        queueId: Int,
+        profileViewModel: ProfileViewModel,
+        groupViewModel: GroupViewModel,
+        navController: NavHostController,
+        scaffoldState: ScaffoldState,
+        coroutineScope: CoroutineScope
+    ) {
+        groupAPI.deleteQueue(queueId).enqueue(object: Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                if (response.isSuccessful) {
+                    //
                 }
                 else {
                     val errorMessage: String = if (response.code() == 400)
-                        "Bad input parameter"
+                        "Invalid data"
+                    else
+                        "Unknown error"
+                    coroutineScope.launch {
+                        scaffoldState.snackbarHostState.showSnackbar(
+                            message = errorMessage
+                        )
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                TODO("Not yet implemented")
+            }
+        })
+    }
+
+    fun enterQueue(
+        queueId: Int,
+        profileViewModel: ProfileViewModel,
+        groupViewModel: GroupViewModel,
+        navController: NavHostController,
+        scaffoldState: ScaffoldState,
+        coroutineScope: CoroutineScope
+    ) {
+        groupAPI.enterQueue(queueId).enqueue(object: Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                if (response.isSuccessful) {
+                    //
+                }
+                else {
+                    val errorMessage: String = if (response.code() == 404)
+                        "Очереди с таким id нет"
                     else if (response.code() == 409)
-                        "Пользователь уже является старостой группы"
-                    else
-                        "Unknown error"
-                    coroutineScope.launch {
-                        scaffoldState.snackbarHostState.showSnackbar(
-                            message = errorMessage
-                        )
-                    }
-                }
-            }
-
-            override fun onFailure(call: Call<GroupCreds>, t: Throwable) {
-                TODO("Not yet implemented")
-            }
-        })
-    }
-
-
-    // TODO("Узнать по поводу group code и сгладить несостыковки с backend")
-    fun joinGroup(
-        profileViewModel: ProfileViewModel,
-        groupCode: MutableState<String>,
-        navController: NavHostController,
-        scaffoldState: ScaffoldState,
-        coroutineScope: CoroutineScope
-    ) {
-        if (groupCode.value == "") {
-            coroutineScope.launch {
-                scaffoldState.snackbarHostState.showSnackbar(
-                    message = "Поле должно быть заполнено"
-                )
-            }
-            return
-        }
-        val enterGroupRequest: EnterGroupRequest = EnterGroupRequest(
-            groupCode.value
-        )
-        userAPI.joinGroup(enterGroupRequest)
-            .enqueue(object : Callback<Void> {
-                override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                    if (response.isSuccessful) {
-                        //
-                    }
-                    else {
-                        val errorMessage: String = if (response.code() == 400)
-                            "Invalid data"
-                        else
-                            "Unknown error"
-                        coroutineScope.launch {
-                            scaffoldState.snackbarHostState.showSnackbar(
-                                message = errorMessage
-                            )
-                        }
-                    }
-                }
-
-                override fun onFailure(call: Call<Void>, t: Throwable) {
-                    TODO("Not yet implemented")
-                }
-            })
-    }
-
-    fun getGroup(
-        scaffoldState: ScaffoldState,
-        coroutineScope: CoroutineScope
-    ) {
-        userAPI.getGroup().enqueue(object: Callback<GroupCreds> {
-            override fun onResponse(call: Call<GroupCreds>, response: Response<GroupCreds>) {
-                if (response.isSuccessful) {
-                    //
-                }
-                else {
-                    val errorMessage: String = if (response.code() == 400)
-                        "Invalid data"
-                    else
-                        "Unknown error"
-                    coroutineScope.launch {
-                        scaffoldState.snackbarHostState.showSnackbar(
-                            message = errorMessage
-                        )
-                    }
-                }
-            }
-
-            override fun onFailure(call: Call<GroupCreds>, t: Throwable) {
-                TODO("Not yet implemented")
-            }
-        })
-    }
-
-    fun deleteGroup(
-        profileViewModel: ProfileViewModel,
-        groupViewModel: GroupViewModel,
-        navController: NavHostController,
-        scaffoldState: ScaffoldState,
-        coroutineScope: CoroutineScope
-    ) {
-        userAPI.deleteGroup().enqueue(object: Callback<Void> {
-            override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                if (response.isSuccessful) {
-                    //
-                }
-                else {
-                    val errorMessage: String = if (response.code() == 400)
-                        "invalid input, object invalid"
-                    else if (response.code() == 403)
-                        "пользователь не является старостой данной группы"
+                        "Пользователь уже записан в эту очередь"
                     else
                         "Unknown error"
                     coroutineScope.launch {
@@ -182,21 +191,24 @@ class GroupAction {
         })
     }
 
-    fun exitGroup(
+    fun quitQueue(
+        queueId: Int,
         profileViewModel: ProfileViewModel,
         groupViewModel: GroupViewModel,
         navController: NavHostController,
         scaffoldState: ScaffoldState,
         coroutineScope: CoroutineScope
     ) {
-        userAPI.exitGroup().enqueue(object: Callback<Void> {
+        groupAPI.quitQueue(queueId).enqueue(object: Callback<Void> {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
                 if (response.isSuccessful) {
                     //
                 }
                 else {
-                    val errorMessage: String = if (response.code() == 400)
-                        "Invalid data"
+                    val errorMessage: String = if (response.code() == 404)
+                        "Очереди с таким id нет"
+                    else if (response.code() == 409)
+                        "Пользователь не записан в эту очередь"
                     else
                         "Unknown error"
                     coroutineScope.launch {
@@ -212,5 +224,4 @@ class GroupAction {
             }
         })
     }
-
 }

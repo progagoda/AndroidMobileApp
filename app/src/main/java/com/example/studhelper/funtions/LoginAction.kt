@@ -3,9 +3,10 @@ package com.example.studhelper.funtions
 import androidx.compose.material.ScaffoldState
 import androidx.compose.runtime.MutableState
 import androidx.navigation.NavController
+import com.example.studhelper.data.AccountCreds
 import com.example.studhelper.data.Group
-import com.example.studhelper.data.LoginRequest
 import com.example.studhelper.data.Profile
+import com.example.studhelper.data.RegisterRequest
 import com.example.studhelper.retrofit.UserAPI
 import com.example.studhelper.screens.loginRegisterFrames.Routes
 import com.example.studhelper.screens.mainFrames.student.profile.ProfileViewModel
@@ -33,7 +34,7 @@ class LoginAction() {
     }
 
     val client = OkHttpClient.Builder().addInterceptor(interceptor).build()
-    val retrofit: Retrofit = Retrofit.Builder().baseUrl("https://dummyjson.com")
+    val retrofit: Retrofit = Retrofit.Builder().baseUrl("http://192.168.31.212:8080")
         .addConverterFactory(GsonConverterFactory.create())
         .client(client)
         .build()
@@ -65,7 +66,12 @@ class LoginAction() {
             admin = false,
             group = Group(name="", code="")
         ))
-        userAPI.register(currentProfile).enqueue(object : Callback<Void> {
+        val registerRequest = RegisterRequest(
+            "anatoly12",
+            "12345",
+            "Anatoly Britkov"
+        )
+        userAPI.register(registerRequest).enqueue(object : Callback<Void> {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
                 if (response.isSuccessful) {
                     profileViewModel.currentProfile = currentProfile
@@ -74,10 +80,6 @@ class LoginAction() {
                 else {
                     val errorMessage: String = if (response.code() == 400)
                         "User exists"
-                    else if (response.code() == 401)
-                        "Invalid group code"
-                    else if (response.code() == 402)
-                        "Group already has head"
                     else
                         "Unknown error"
                     coroutineScope.launch {
@@ -90,7 +92,13 @@ class LoginAction() {
             }
 
             override fun onFailure(call: Call<Void>, t: Throwable) {
-                TODO("Not yet implemented")
+                coroutineScope.launch {
+                    t.message?.let {
+                        scaffoldState.snackbarHostState.showSnackbar(
+                            message = it
+                        )
+                    }
+                }
             }
         })
     }
@@ -111,12 +119,15 @@ class LoginAction() {
                 )
             }
         } else {
-            val loginRequest: LoginRequest = LoginRequest(login, password)
-            userAPI.login(loginRequest).enqueue(object : Callback<Profile> {
-                override fun onResponse(call: Call<Profile>, response: Response<Profile>) {
+            val accountCreds: AccountCreds = AccountCreds(login, password)
+            userAPI.login(accountCreds).enqueue(object : Callback<Void> {
+                override fun onResponse(call: Call<Void>, response: Response<Void>) {
                     if (response.isSuccessful) {
-                        currentProfile = response.body()
-                        profileViewModel.currentProfile = currentProfile!!
+//                        currentProfile = Profile(
+//                            name = accountCreds.username,
+//                            password = accountCreds.password
+//                        )
+//                        profileViewModel.currentProfile = currentProfile!!
                         redirect { navController.navigate(Routes.ChooseGroup.route) }
                     } else {
                         val errorMessage = if (response.code() == 400)
@@ -131,7 +142,7 @@ class LoginAction() {
                     }
                 }
 
-                override fun onFailure(call: Call<Profile>, t: Throwable) {
+                override fun onFailure(call: Call<Void>, t: Throwable) {
                     TODO("Not yet implemented")
                 }
             })

@@ -6,7 +6,7 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class Profile(
     val name: String,
-    var group: Group,
+    var group: Group? = null,
     val avatar: Int = R.drawable.avatar_bad_breaking,
     val isu: String,
     val password: String,
