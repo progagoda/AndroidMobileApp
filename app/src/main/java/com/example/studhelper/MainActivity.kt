@@ -59,11 +59,11 @@ fun ScreenMain(subjectsViewModel: SubjectViewModel, profileViewModel: ProfileVie
         // Another Route : Join group
         composable(Routes.JoinGroup.route) {
             // Register Screen
-            JoinGroup(navController = navController, profileViewModel,groupViewModel)
+            JoinGroup(navController = navController, profileViewModel)
         }
         // Another Route : Create group
         composable(Routes.CreateGroup.route) {
-            CreateGroup(navController = navController, profileViewModel = profileViewModel, groupViewModel)
+            CreateGroup(navController = navController, profileViewModel = profileViewModel)
 
 
         }
@@ -87,7 +87,7 @@ fun ScreenMain(subjectsViewModel: SubjectViewModel, profileViewModel: ProfileVie
         // Another Route : CreateQueue
         composable(Routes.CreateQueue.route) {
             // Register Screen
-            CreateQueue(navController = navController, addSubject={subjectsViewModel.addSubject(it)}, profileViewModel = profileViewModel, groupViewModel = groupViewModel)
+            CreateQueue(navController = navController, profileViewModel = profileViewModel)
         }
         composable(Routes.SubjectQueue.route){
             SubjectQueue(navController = navController, subjectViewModel = subjectsViewModel, profileViewModel = profileViewModel)

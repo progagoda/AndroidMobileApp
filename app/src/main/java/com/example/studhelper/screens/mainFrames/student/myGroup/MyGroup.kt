@@ -2,17 +2,12 @@ package com.example.studhelper.screens.mainFrames.student.myGroup
 
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material.Card
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Scaffold
-import androidx.compose.material.SnackbarDefaults.backgroundColor
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -73,7 +68,7 @@ fun MyGroup(navController: NavHostController, profileViewModel: ProfileViewModel
                 }
                 }
                 itemsIndexed(profile) { index, item ->
-                    GroupmateCard(image = item.avatar, name = item.name, profileViewModel )
+                    GroupmateCard(image = item.avatar, name = item.fullName, profileViewModel )
                 }
                 items(count=1){
                     if (profileViewModel.currentProfile.admin){

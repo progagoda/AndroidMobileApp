@@ -1,11 +1,12 @@
 package com.example.studhelper.funtions
 
 import androidx.compose.material.ScaffoldState
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
-import com.example.studhelper.data.CreateQueueRequest
-import com.example.studhelper.data.QueueList
-import com.example.studhelper.data.StudentsInQueueList
+import com.example.studhelper.R
+import com.example.studhelper.data.*
 import com.example.studhelper.retrofit.GroupAPI
+import com.example.studhelper.screens.loginRegisterFrames.Routes
 import com.example.studhelper.screens.mainFrames.student.myGroup.GroupViewModel
 import com.example.studhelper.screens.mainFrames.student.profile.ProfileViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -34,15 +35,47 @@ class QueueAction {
 
     fun getAllQueues(
         profileViewModel: ProfileViewModel,
-        groupViewModel: GroupViewModel,
         navController: NavHostController,
         scaffoldState: ScaffoldState,
         coroutineScope: CoroutineScope
-    ) {
+    ): MutableList<Subject> {
+        val subjectList = mutableListOf<Subject>(
+            Subject(
+                name = "Методы и средства программной инженерии",
+                admin = Profile(
+                    "Артем Сергеевич",
+                    GroupsRepo.getGroups()[0],
+                    R.drawable.avatar_bad_breaking,
+                    "285384",
+                    "12345",
+                    true
+                ),
+                students = listOf<Profile>(
+                    Profile(
+                        "Артем Ваховскович",
+                        GroupsRepo.getGroups()[0],
+                        R.drawable.avatar_bad_breaking,
+                        "285381",
+                        "12345",
+                        false
+                    ),
+                    Profile(
+                        "Артем Крисанович",
+                        GroupsRepo.getGroups()[0],
+                        R.drawable.avatar_bad_breaking,
+                        "285382",
+                        "12345",
+                        false
+                    ),
+                )
+            )
+        )
+//        navController.navigate(Routes.Queue.route)
+        return subjectList
         groupAPI.getAllQueues().enqueue(object: Callback<QueueList> {
             override fun onResponse(call: Call<QueueList>, response: Response<QueueList>) {
                 if (response.isSuccessful) {
-                    //
+//                    return subjectList
                 }
                 else {
                     val errorMessage: String = "Unknown error"
@@ -51,11 +84,13 @@ class QueueAction {
                             message = errorMessage
                         )
                     }
+//                    return subjectList;
                 }
             }
 
-            override fun onFailure(call: Call<QueueList>, t: Throwable) {
-                TODO("Not yet implemented")
+            override fun onFailure(call: Call<QueueList>, t: Throwable){
+                //TODO("Not yet implemented")
+                //return subjectList
             }
         })
     }
@@ -63,12 +98,46 @@ class QueueAction {
     fun createQueue(
         queueName: String,
         profileViewModel: ProfileViewModel,
-        groupViewModel: GroupViewModel,
-        navController: NavHostController,
+        navController: NavController,
         scaffoldState: ScaffoldState,
         coroutineScope: CoroutineScope
-    ) {
+    ): MutableList<Subject> {
         val createQueueRequest = CreateQueueRequest(queueName)
+        val subjectList = mutableListOf<Subject>(
+            Subject(
+                name = "Методы и средства программной инженерии",
+                admin = Profile(
+                    "Артем Сергеевич",
+                    GroupsRepo.getGroups()[0],
+                    R.drawable.avatar_bad_breaking,
+                    "285384",
+                    "12345",
+                    true
+                ),
+                students = listOf<Profile>(
+                    Profile(
+                        "Артем Ваховскович",
+                        GroupsRepo.getGroups()[0],
+                        R.drawable.avatar_bad_breaking,
+                        "285381",
+                        "12345",
+                        false
+                    ),
+                    Profile(
+                        "Артем Крисанович",
+                        GroupsRepo.getGroups()[0],
+                        R.drawable.avatar_bad_breaking,
+                        "285382",
+                        "12345",
+                        false
+                    ),
+                )
+            )
+        )
+        var addSubject = Subject(2,"asda",profileViewModel.currentProfile,profileViewModel.profiles)
+        subjectList.add(addSubject)
+        navController.navigate(Routes.Queue.route)
+        return subjectList
         groupAPI.createQueue(createQueueRequest).enqueue(object: Callback<Void> {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
                 if (response.isSuccessful) {
@@ -128,7 +197,6 @@ class QueueAction {
     fun deleteQueue(
         queueId: Int,
         profileViewModel: ProfileViewModel,
-        groupViewModel: GroupViewModel,
         navController: NavHostController,
         scaffoldState: ScaffoldState,
         coroutineScope: CoroutineScope
@@ -136,7 +204,7 @@ class QueueAction {
         groupAPI.deleteQueue(queueId).enqueue(object: Callback<Void> {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
                 if (response.isSuccessful) {
-                    //
+                    getAllQueues(profileViewModel,navController,scaffoldState,coroutineScope)
                 }
                 else {
                     val errorMessage: String = if (response.code() == 400)
@@ -152,7 +220,8 @@ class QueueAction {
             }
 
             override fun onFailure(call: Call<Void>, t: Throwable) {
-                TODO("Not yet implemented")
+              //  TODO("Not yet implemented")
+                getAllQueues(profileViewModel,navController,scaffoldState,coroutineScope)
             }
         })
     }

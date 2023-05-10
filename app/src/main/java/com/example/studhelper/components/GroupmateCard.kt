@@ -1,7 +1,6 @@
 package com.example.studhelper.components
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -9,9 +8,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -22,7 +19,7 @@ import com.example.studhelper.screens.mainFrames.student.profile.ProfileViewMode
 @Composable
 fun GroupmateCard(image: Int, name: String, profileViewModel: ProfileViewModel) {
     var cardColor = Color(0xFF262A34)
-    if (profileViewModel.currentProfile.admin && profileViewModel.currentProfile.name == name) {
+    if (profileViewModel.currentProfile.admin && profileViewModel.currentProfile.fullName == name) {
         cardColor = Color(0x81FFD400)
     }
     Card(

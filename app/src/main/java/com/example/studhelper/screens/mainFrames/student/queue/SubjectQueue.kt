@@ -11,9 +11,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material.Scaffold
-import androidx.compose.material.SnackbarDefaults.backgroundColor
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -68,7 +66,7 @@ fun SubjectQueue(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 items(count = 1) {
-                    subjectViewModel.currentSubject.name?.let { it1 ->
+                    subjectViewModel.currentSubject.name.let { it1 ->
                         Text(
                             text = it1,
                             fontSize = 30.sp,
@@ -79,7 +77,7 @@ fun SubjectQueue(
                     }
                 }
                 itemsIndexed(subscribers) { index, item ->
-                    GroupmateCard(image = item.avatar, name = item.name, profileViewModel)
+                    GroupmateCard(image = item.avatar, name = item.fullName, profileViewModel)
 
                 }
                 items(count = 1) {
@@ -88,7 +86,7 @@ fun SubjectQueue(
                     ) {
                         GroupmateCard(
                             image = profileViewModel.currentProfile.avatar,
-                            name = profileViewModel.currentProfile.name,
+                            name = profileViewModel.currentProfile.fullName,
                             profileViewModel
                         )
                     }

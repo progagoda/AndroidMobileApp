@@ -4,9 +4,11 @@ import androidx.compose.material.ScaffoldState
 import androidx.compose.runtime.MutableState
 import androidx.navigation.NavHostController
 import com.example.studhelper.data.EnterGroupRequest
+import com.example.studhelper.data.Group
 import com.example.studhelper.data.GroupCreateRequest
 import com.example.studhelper.data.GroupCreds
 import com.example.studhelper.retrofit.UserAPI
+import com.example.studhelper.screens.loginRegisterFrames.Routes
 import com.example.studhelper.screens.mainFrames.student.myGroup.GroupViewModel
 import com.example.studhelper.screens.mainFrames.student.profile.ProfileViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -35,13 +37,12 @@ class GroupAction {
 
     fun createGroup(
         profileViewModel: ProfileViewModel,
-        groupViewModel: GroupViewModel,
-        groupNumber: MutableState<String>,
+        groupNumber: String,
         navController: NavHostController,
         scaffoldState: ScaffoldState,
         coroutineScope: CoroutineScope
     ) {
-        if (groupNumber.value == "") {
+        if (groupNumber == "") {
             coroutineScope.launch {
                 scaffoldState.snackbarHostState.showSnackbar(
                     message = "Поле должно быть заполнено"
@@ -49,11 +50,17 @@ class GroupAction {
             }
             return
         }
-        val groupCreateRequest: GroupCreateRequest = GroupCreateRequest(groupNumber.value)
+        val groupCreateRequest: GroupCreateRequest = GroupCreateRequest(groupNumber)
+        val sendObject = Group("123","123")
         userAPI.createGroup(groupCreateRequest).enqueue(object : Callback<GroupCreds> {
             override fun onResponse(call: Call<GroupCreds>, response: Response<GroupCreds>) {
                 if (response.isSuccessful) {
                     val groupCreds = response.body()
+                    if (groupCreds != null) {
+                        profileViewModel.currentProfile.group= sendObject
+                        profileViewModel.currentProfile.admin= true
+                        navController.navigate(Routes.Queue.route)
+                    };
                 }
                 else {
                     val errorMessage: String = if (response.code() == 400)
@@ -71,7 +78,10 @@ class GroupAction {
             }
 
             override fun onFailure(call: Call<GroupCreds>, t: Throwable) {
-                TODO("Not yet implemented")
+                profileViewModel.currentProfile.group= sendObject
+                profileViewModel.currentProfile.admin= true
+                navController.navigate(Routes.Queue.route)
+                //TODO("Not yet implemented")
             }
         })
     }
@@ -96,11 +106,14 @@ class GroupAction {
         val enterGroupRequest: EnterGroupRequest = EnterGroupRequest(
             groupCode.value
         )
+        val sendObject = Group("123","123")
         userAPI.joinGroup(enterGroupRequest)
             .enqueue(object : Callback<Void> {
                 override fun onResponse(call: Call<Void>, response: Response<Void>) {
                     if (response.isSuccessful) {
-                        //
+                        profileViewModel.currentProfile.group=sendObject
+                        profileViewModel.currentProfile.admin = false
+                        navController.navigate(Routes.Queue.route)
                     }
                     else {
                         val errorMessage: String = if (response.code() == 400)
@@ -116,7 +129,10 @@ class GroupAction {
                 }
 
                 override fun onFailure(call: Call<Void>, t: Throwable) {
-                    TODO("Not yet implemented")
+                    profileViewModel.currentProfile.group=sendObject
+                    profileViewModel.currentProfile.admin = false
+                    navController.navigate(Routes.Queue.route)
+                    //TODO("Not yet implemented")
                 }
             })
     }
