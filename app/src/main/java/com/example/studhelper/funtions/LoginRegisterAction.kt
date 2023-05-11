@@ -10,10 +10,6 @@ import com.example.studhelper.screens.mainFrames.student.profile.ProfileViewMode
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-//fun redirect(url: () -> Unit) {
-//    url()
-//}
-
 fun register(
     isu: MutableState<String>,
     name: MutableState<String>,
@@ -35,14 +31,14 @@ fun register(
         return
     }
     val currentProfile = (Profile(
-        name = "${name.value} ${surname.value}",
-        isu = isu.value,
+        fullName = "${name.value} ${surname.value}",
+        login = isu.value,
         password = password.value,
         admin = false,
         group = Group(name="", code="")
     ))
     profiles.forEach { item ->
-        if (item.isu == currentProfile.isu) {
+        if (item.login == currentProfile.login) {
             coroutineScope.launch {
                 scaffoldState.snackbarHostState.showSnackbar(
                     message = "Данное ису уже существует"
@@ -68,7 +64,7 @@ fun checkUser(
     var currentProfile: Profile? = null;
     if (login != "" && password != "") {
         profileViewModel.profiles.forEach() { profile ->
-            if (profile.isu == login && profile.password == password)
+            if (profile.login == login && profile.password == password)
                 if (!profile.group.equals("")) {
                     currentProfile = profile
                 } else redirect { navController.navigate(Routes.ChooseGroup.route) }

@@ -5,10 +5,10 @@ import com.example.studhelper.R
 import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class Profile(
-    val name: String,
+    val fullName: String,
     var group: Group,
     val avatar: Int = R.drawable.avatar_bad_breaking,
-    val isu: String,
+    val login: String,
     val password: String,
     var admin: Boolean
 ) : Parcelable

@@ -8,7 +8,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -21,6 +23,7 @@ import com.example.studhelper.components.BottomMenu
 import com.example.studhelper.components.CustomButton
 import com.example.studhelper.components.SubjectCard
 import com.example.studhelper.data.Subject
+import com.example.studhelper.funtions.QueueAction
 import com.example.studhelper.funtions.loadQueue
 import com.example.studhelper.screens.loginRegisterFrames.Routes
 import com.example.studhelper.screens.mainFrames.student.profile.ProfileViewModel
@@ -34,10 +37,14 @@ fun Queue(
 ) {
     val admin =
         profileViewModel.currentProfile.admin;// depends on user usual student or admin of group
-    val subjects = loadQueue(profileViewModel, subjectViewModel)
+    val scaffoldState = rememberScaffoldState()
+    val coroutineScope = rememberCoroutineScope()
+    subjectViewModel.subjects =
+        QueueAction(profileViewModel).getAllQueues(profileViewModel, navController, scaffoldState, coroutineScope)
     Scaffold(
         bottomBar = { BottomMenu(navController = navController, currentPage = "Очереди") },
-        content = { padding -> // We have to pass the scaffold inner padding to our content. That's why we use Box.
+        scaffoldState = scaffoldState,
+        content = { padding ->
             LazyColumn(
                 modifier = Modifier
                     .fillMaxHeight(0.93f)
@@ -68,9 +75,11 @@ fun Queue(
                         }
                     }
                 }
-                itemsIndexed(subjects) { _, item ->
+                itemsIndexed(subjectViewModel.subjects) { _, item ->
                     SubjectCard(
                         subject = item,
+                        scaffoldState = scaffoldState,
+                        coroutineScope = coroutineScope,
                         deleteSubject = deleteSubject,
                         subjectViewModel = subjectViewModel,
                         profileViewModel = profileViewModel,

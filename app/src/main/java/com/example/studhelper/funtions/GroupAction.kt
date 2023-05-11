@@ -4,13 +4,16 @@ import androidx.compose.material.ScaffoldState
 import androidx.compose.runtime.MutableState
 import androidx.navigation.NavHostController
 import com.example.studhelper.data.EnterGroupRequest
+import com.example.studhelper.data.Group
 import com.example.studhelper.data.GroupCreateRequest
+import com.example.studhelper.data.GroupCreds
 import com.example.studhelper.retrofit.UserAPI
 import com.example.studhelper.screens.loginRegisterFrames.Routes
 import com.example.studhelper.screens.mainFrames.student.myGroup.GroupViewModel
 import com.example.studhelper.screens.mainFrames.student.profile.ProfileViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import okhttp3.Credentials
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
@@ -19,15 +22,28 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class GroupAction {
+class GroupAction(profileViewModel: ProfileViewModel) {
     val interceptor = HttpLoggingInterceptor()
 
     init {
         interceptor.level = HttpLoggingInterceptor.Level.BODY
     }
 
-    val client = OkHttpClient.Builder().addInterceptor(interceptor).build()
-    val retrofit: Retrofit = Retrofit.Builder().baseUrl("https://dummyjson.com")
+    val client = OkHttpClient.Builder()
+        .addInterceptor(interceptor)
+        .addInterceptor { chain ->
+            val credentials: String = Credentials.basic(
+                profileViewModel.currentProfile.login,
+                profileViewModel.currentProfile.password
+            )
+
+            val newRequest = chain.request().newBuilder()
+                .addHeader("Authorization", credentials)
+                .build()
+            chain.proceed(newRequest)
+        }
+        .build()
+    val retrofit: Retrofit = Retrofit.Builder().baseUrl("http://192.168.31.212:8080")
         .addConverterFactory(GsonConverterFactory.create())
         .client(client)
         .build()
@@ -35,13 +51,12 @@ class GroupAction {
 
     fun createGroup(
         profileViewModel: ProfileViewModel,
-        groupViewModel: GroupViewModel,
-        groupNumber: MutableState<String>,
+        groupNumber: String,
         navController: NavHostController,
         scaffoldState: ScaffoldState,
         coroutineScope: CoroutineScope
     ) {
-        if (groupNumber.value == "") {
+        if (groupNumber == "") {
             coroutineScope.launch {
                 scaffoldState.snackbarHostState.showSnackbar(
                     message = "Поле должно быть заполнено"
@@ -49,14 +64,18 @@ class GroupAction {
             }
             return
         }
-        val groupCreateRequest: GroupCreateRequest = GroupCreateRequest(groupNumber.value)
-        userAPI.createGroup(groupCreateRequest).enqueue(object : Callback<Void> {
-            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+        val groupCreateRequest: GroupCreateRequest = GroupCreateRequest(groupNumber)
+        var sendObject = Group(groupNumber,"123")
+        userAPI.createGroup(groupCreateRequest).enqueue(object : Callback<GroupCreds> {
+            override fun onResponse(call: Call<GroupCreds>, response: Response<GroupCreds>) {
                 if (response.isSuccessful) {
-                    TODO("Кажется, что использование GroupViewModel - херня какая-то")
-//                    groupViewModel.addGroup(profileViewModel.currentProfile, groupNumber.value)
-                    profileViewModel.currentProfile.admin = true
-                    navController.navigate(Routes.Queue.route)
+                    val groupCreds = response.body()
+                    if (groupCreds != null) {
+                        sendObject.code = response.body()!!.inviteCode!!
+                        profileViewModel.currentProfile.group= sendObject
+                        profileViewModel.currentProfile.admin= true
+                        navController.navigate(Routes.Queue.route)
+                    };
                 }
                 else {
                     val errorMessage: String = if (response.code() == 400)
@@ -73,8 +92,11 @@ class GroupAction {
                 }
             }
 
-            override fun onFailure(call: Call<Void>, t: Throwable) {
-                TODO("Not yet implemented")
+            override fun onFailure(call: Call<GroupCreds>, t: Throwable) {
+//                profileViewModel.currentProfile.group= sendObject
+//                profileViewModel.currentProfile.admin= true
+//                navController.navigate(Routes.Queue.route)
+                //TODO("Not yet implemented")
             }
         })
     }
@@ -97,14 +119,16 @@ class GroupAction {
             return
         }
         val enterGroupRequest: EnterGroupRequest = EnterGroupRequest(
-            profileViewModel.currentProfile.isu.toInt(),
-            profileViewModel.currentProfile.group.name.toInt()
+            groupCode.value
         )
-        userAPI.enterGroup(enterGroupRequest.user_id, enterGroupRequest.group_id)
+        val sendObject = Group("123","123")
+        userAPI.joinGroup(enterGroupRequest)
             .enqueue(object : Callback<Void> {
                 override fun onResponse(call: Call<Void>, response: Response<Void>) {
                     if (response.isSuccessful) {
-                        TODO("Непонятно, что делать на фронте при успешном подключении к группе на бэке")
+                        profileViewModel.currentProfile.group=sendObject
+                        profileViewModel.currentProfile.admin = false
+                        navController.navigate(Routes.Queue.route)
                     }
                     else {
                         val errorMessage: String = if (response.code() == 400)
@@ -120,18 +144,104 @@ class GroupAction {
                 }
 
                 override fun onFailure(call: Call<Void>, t: Throwable) {
-                    TODO("Not yet implemented")
+//                    profileViewModel.currentProfile.group=sendObject
+//                    profileViewModel.currentProfile.admin = false
+//                    navController.navigate(Routes.Queue.route)
+//                    //TODO("Not yet implemented")
                 }
             })
+    }
+
+    fun getGroup(
+        scaffoldState: ScaffoldState,
+        coroutineScope: CoroutineScope
+    ) {
+        userAPI.getGroup().enqueue(object: Callback<GroupCreds> {
+            override fun onResponse(call: Call<GroupCreds>, response: Response<GroupCreds>) {
+                if (response.isSuccessful) {
+                    //
+                }
+                else {
+                    val errorMessage: String = if (response.code() == 400)
+                        "Invalid data"
+                    else
+                        "Unknown error"
+                    coroutineScope.launch {
+                        scaffoldState.snackbarHostState.showSnackbar(
+                            message = errorMessage
+                        )
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<GroupCreds>, t: Throwable) {
+                TODO("Not yet implemented")
+            }
+        })
     }
 
     fun deleteGroup(
         profileViewModel: ProfileViewModel,
         groupViewModel: GroupViewModel,
-        navController: NavHostController
+        navController: NavHostController,
+        scaffoldState: ScaffoldState,
+        coroutineScope: CoroutineScope
     ) {
-        TODO("Уточнить у Артёма, что делать в этом случае")
+        userAPI.deleteGroup().enqueue(object: Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                if (response.isSuccessful) {
+                    //
+                }
+                else {
+                    val errorMessage: String = if (response.code() == 400)
+                        "invalid input, object invalid"
+                    else if (response.code() == 403)
+                        "пользователь не является старостой данной группы"
+                    else
+                        "Unknown error"
+                    coroutineScope.launch {
+                        scaffoldState.snackbarHostState.showSnackbar(
+                            message = errorMessage
+                        )
+                    }
+                }
+            }
 
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                TODO("Not yet implemented")
+            }
+        })
+    }
+
+    fun exitGroup(
+        profileViewModel: ProfileViewModel,
+        groupViewModel: GroupViewModel,
+        navController: NavHostController,
+        scaffoldState: ScaffoldState,
+        coroutineScope: CoroutineScope
+    ) {
+        userAPI.exitGroup().enqueue(object: Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                if (response.isSuccessful) {
+                    //
+                }
+                else {
+                    val errorMessage: String = if (response.code() == 400)
+                        "Invalid data"
+                    else
+                        "Unknown error"
+                    coroutineScope.launch {
+                        scaffoldState.snackbarHostState.showSnackbar(
+                            message = errorMessage
+                        )
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                TODO("Not yet implemented")
+            }
+        })
     }
 
 }

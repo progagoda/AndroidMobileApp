@@ -1,35 +1,36 @@
 package com.example.studhelper.retrofit
 
+import com.example.studhelper.data.AccountCreds
+import com.example.studhelper.data.EnterGroupRequest
 import com.example.studhelper.data.GroupCreateRequest
-import com.example.studhelper.data.LoginRequest
-import com.example.studhelper.data.Profile
-import junit.framework.Test
+import com.example.studhelper.data.GroupCreds
+import com.example.studhelper.data.RegisterRequest
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.PATCH
 import retrofit2.http.POST
-import retrofit2.http.Path
 
 interface UserAPI {
     @POST("login")
-    fun login(@Body loginRequest: LoginRequest): Call<Profile>
+    fun login(@Body accountCreds: AccountCreds): Call<Void>
 
-    @POST("register")
-    fun register(@Body profile: Profile): Call<Void>
+    @POST("users/register")
+    fun register(@Body registerRequest: RegisterRequest): Call<Void>
 
-    @POST("groups")
-    fun createGroup(@Body groupCreateRequest: GroupCreateRequest): Call<Void>
+    @POST("group")
+    fun createGroup(@Body groupCreateRequest: GroupCreateRequest): Call<GroupCreds>
 
-    @POST("{user_id}/groups/{group_id}")
-    fun enterGroup(@Path("user_id") userId: Int, @Path("group_id") groupId: Int): Call<Void>
+    @PATCH("group")
+    fun joinGroup(@Body enterGroupRequest: EnterGroupRequest): Call<Void>
 
-    @DELETE("{user_id}/groups/{group_id}")
-    fun exitGroup(@Path("user_id") userId: Int, @Path("group_id") groupId: Int): Call<Void>
+    @GET("group")
+    fun getGroup(): Call<GroupCreds>
 
-    @GET("logout")
-    fun logoutUser(@Body userId: Int): Call<Void>
+    @DELETE("group")
+    fun deleteGroup(): Call<Void>
 
-    @GET("products/1")
-    fun getchtoto(): Call<Test>
+    @PATCH("group/quit")
+    fun exitGroup(): Call<Void>
 }

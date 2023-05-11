@@ -3,9 +3,10 @@ package com.example.studhelper.funtions
 import androidx.compose.material.ScaffoldState
 import androidx.compose.runtime.MutableState
 import androidx.navigation.NavController
+import com.example.studhelper.data.AccountCreds
 import com.example.studhelper.data.Group
-import com.example.studhelper.data.LoginRequest
 import com.example.studhelper.data.Profile
+import com.example.studhelper.data.RegisterRequest
 import com.example.studhelper.retrofit.UserAPI
 import com.example.studhelper.screens.loginRegisterFrames.Routes
 import com.example.studhelper.screens.mainFrames.student.profile.ProfileViewModel
@@ -32,24 +33,26 @@ class LoginAction() {
         interceptor.level = HttpLoggingInterceptor.Level.BODY
     }
 
-    val client = OkHttpClient.Builder().addInterceptor(interceptor).build()
-    val retrofit: Retrofit = Retrofit.Builder().baseUrl("https://dummyjson.com")
-        .addConverterFactory(GsonConverterFactory.create())
-        .client(client)
+    val clientAuth = OkHttpClient.Builder().addInterceptor(interceptor)
         .build()
+
+    val retrofit: Retrofit = Retrofit.Builder().baseUrl("http://192.168.31.212:8080")
+        .addConverterFactory(GsonConverterFactory.create())
+        .client(clientAuth)
+        .build()
+
     val userAPI: UserAPI = retrofit.create(UserAPI::class.java)
 
     fun register(
-        isu: MutableState<String>,
-        name: MutableState<String>,
-        surname: MutableState<String>,
+        login: MutableState<String>,
+        fullName: MutableState<String>,
         password: MutableState<String>,
         scaffoldState: ScaffoldState,
         coroutineScope: CoroutineScope,
         navController: NavController,
         profileViewModel: ProfileViewModel
     ) {
-        if(isu.value.isEmpty() || name.value.isEmpty()  || surname.value.isEmpty()|| password.value.isEmpty()){
+        if(login.value.isEmpty() || fullName.value.isEmpty()  || fullName.value.isEmpty()|| password.value.isEmpty()){
             coroutineScope.launch {
                 scaffoldState.snackbarHostState.showSnackbar(
                     message = "Все поля должны быть заполнены"
@@ -57,27 +60,24 @@ class LoginAction() {
             }
             return
         }
-
-        val currentProfile = (Profile(
-            name = "${name.value} ${surname.value}",
-            isu = isu.value,
-            password = password.value,
-            admin = false,
-            group = Group(name="", code="")
-        ))
-        userAPI.register(currentProfile).enqueue(object : Callback<Void> {
+        val registerRequest = RegisterRequest(
+            login.value,
+            password.value,
+            fullName.value
+        )
+        userAPI.register(registerRequest).enqueue(object : Callback<Void> {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
                 if (response.isSuccessful) {
-                    profileViewModel.currentProfile = currentProfile
+                    profileViewModel.currentProfile = Profile( fullName = registerRequest.fullName,
+                        login = registerRequest.login,
+                        password = registerRequest.password,
+                        admin = false,
+                        group = Group(name="", code=""))
                     navController.navigate(Routes.ChooseGroup.route)
                 }
                 else {
                     val errorMessage: String = if (response.code() == 400)
                         "User exists"
-                    else if (response.code() == 401)
-                        "Invalid group code"
-                    else if (response.code() == 402)
-                        "Group already has head"
                     else
                         "Unknown error"
                     coroutineScope.launch {
@@ -90,7 +90,19 @@ class LoginAction() {
             }
 
             override fun onFailure(call: Call<Void>, t: Throwable) {
-                TODO("Not yet implemented")
+//                profileViewModel.currentProfile = Profile( fullName = registerRequest.fullName,
+//                    login = registerRequest.login,
+//                    password = registerRequest.password,
+//                    admin = false,
+//                    group = Group(name="", code=""))
+//                navController.navigate(Routes.ChooseGroup.route)
+//                coroutineScope.launch {
+//                    t.message?.let {
+//                        scaffoldState.snackbarHostState.showSnackbar(
+//                            message = it
+//                        )
+//                    }
+//                }
             }
         })
     }
@@ -103,7 +115,6 @@ class LoginAction() {
         scaffoldState: ScaffoldState,
         profileViewModel: ProfileViewModel
     ) {
-        var currentProfile: Profile? = null;
         if (login == "" || password == ""){
             coroutineScope.launch {
                 scaffoldState.snackbarHostState.showSnackbar(
@@ -111,12 +122,21 @@ class LoginAction() {
                 )
             }
         } else {
-            val loginRequest: LoginRequest = LoginRequest(login, password)
-            userAPI.login(loginRequest).enqueue(object : Callback<Profile> {
-                override fun onResponse(call: Call<Profile>, response: Response<Profile>) {
+            val accountCreds: AccountCreds = AccountCreds(login, password)
+            val authRequest = RegisterRequest(
+                login,
+                password,
+             "Бэк"
+            )
+            val sendObject =  Profile( fullName = authRequest.fullName,
+                login = authRequest.login,
+                password = authRequest.password,
+                admin = false,
+                group = Group(name="", code=""))
+            userAPI.login(accountCreds).enqueue(object : Callback<Void> {
+                override fun onResponse(call: Call<Void>, response: Response<Void>) {
                     if (response.isSuccessful) {
-                        currentProfile = response.body()
-                        profileViewModel.currentProfile = currentProfile!!
+                        profileViewModel.currentProfile = sendObject
                         redirect { navController.navigate(Routes.ChooseGroup.route) }
                     } else {
                         val errorMessage = if (response.code() == 400)
@@ -131,10 +151,16 @@ class LoginAction() {
                     }
                 }
 
-                override fun onFailure(call: Call<Profile>, t: Throwable) {
-                    TODO("Not yet implemented")
+                override fun onFailure(call: Call<Void>, t: Throwable) {
+//                    profileViewModel.currentProfile = sendObject
+//                    redirect { navController.navigate(Routes.ChooseGroup.route)}
+//                    coroutineScope.launch {
+//                        scaffoldState.snackbarHostState.showSnackbar(
+//                            message = "Cервер упал"
+//                        )
+//                    }
                 }
             })
         }
     }
-}
+    }

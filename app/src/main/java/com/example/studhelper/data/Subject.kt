@@ -6,6 +6,7 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class Subject(
+    val id: Int=1,
     val name: String,
     val admin: Profile,
     var students: List<Profile>,
@@ -13,8 +14,8 @@ data class Subject(
 
 private val subjectsDB = listOf<Subject>(
     Subject(
-        "Методы и средства программной инженерии",
-        Profile(
+        name = "Методы и средства программной инженерии",
+        admin = Profile(
             "Артем Сергеевич",
             GroupsRepo.getGroups()[0],
             R.drawable.avatar_bad_breaking,
@@ -22,7 +23,7 @@ private val subjectsDB = listOf<Subject>(
             "12345",
             true
         ),
-        listOf<Profile>(
+        students = listOf<Profile>(
             Profile(
                 "Артем Ваховскович",
                 GroupsRepo.getGroups()[0],

@@ -27,10 +27,9 @@ fun Register(
     navController: NavHostController,
     profileViewModel: ProfileViewModel
 ) {
-    var isu = rememberSaveable { mutableStateOf("") }
-    var name = rememberSaveable { mutableStateOf("") }
-    var surname = rememberSaveable { mutableStateOf("") }
-    var password = rememberSaveable { mutableStateOf("") }
+    val login = rememberSaveable { mutableStateOf("") }
+    val fullName = rememberSaveable { mutableStateOf("") }
+    val password = rememberSaveable { mutableStateOf("") }
     val scaffoldState = rememberScaffoldState()
     val coroutineScope = rememberCoroutineScope()
     Scaffold(
@@ -51,16 +50,14 @@ fun Register(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically)
         ) {
-            Input(name = "ISU", text = isu.value, onTextChange = { isu.value = it })
-            Input(name = "Name", text = name.value, onTextChange = { name.value = it })
-            Input(name = "Surname", text = surname.value, onTextChange = { surname.value = it })
+            Input(name = "Login", text = login.value, onTextChange = { login.value = it })
             Input(name = "Password", text = password.value, onTextChange = { password.value = it })
+            Input(name = "FullName", text = fullName.value, onTextChange = { fullName.value = it })
             CustomButton(
                 action = {
                     LoginAction().register(
-                        isu,
-                        name,
-                        surname,
+                        login,
+                        fullName,
                         password,
                         scaffoldState,
                         coroutineScope,

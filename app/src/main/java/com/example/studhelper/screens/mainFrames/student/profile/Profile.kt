@@ -1,10 +1,8 @@
 package com.example.studhelper.screens.mainFrames.student
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Scaffold
-import androidx.compose.material.SnackbarDefaults.backgroundColor
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -21,7 +19,6 @@ import com.example.studhelper.R
 import com.example.studhelper.components.BottomMenu
 import com.example.studhelper.components.CustomButton
 import com.example.studhelper.funtions.logOut
-import com.example.studhelper.screens.loginRegisterFrames.Routes
 import com.example.studhelper.screens.mainFrames.student.profile.ProfileViewModel
 
 @Composable
@@ -53,7 +50,7 @@ profileViewModel: ProfileViewModel) {
                    modifier=Modifier.fillMaxWidth().padding(vertical = 10.dp),
                    horizontalAlignment = Alignment.CenterHorizontally
                ) {
-                   Text(text = profileViewModel.currentProfile.name, fontFamily = InterFamily, fontWeight = FontWeight.Bold, fontSize = 40.sp, color = Color.White)
+                   Text(text = profileViewModel.currentProfile.fullName, fontFamily = InterFamily, fontWeight = FontWeight.Bold, fontSize = 40.sp, color = Color.White)
                    Text(text = profileViewModel.currentProfile.group.name, fontFamily = InterFamily, fontSize = 20.sp,color = Color.White)
                    CustomButton(action = {logOut(profileViewModel,navController)}, name ="Выйти из профиля" )
                }

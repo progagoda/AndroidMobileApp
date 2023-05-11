@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.LinearProgressIndicator
+import androidx.compose.material.ScaffoldState
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -17,19 +18,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.example.studhelper.InterFamily
-import com.example.studhelper.data.Profile
 import com.example.studhelper.data.Subject
+import com.example.studhelper.funtions.QueueAction
 import com.example.studhelper.funtions.goToQueue
 import com.example.studhelper.funtions.loadGroup
-import com.example.studhelper.funtions.redirect
-import com.example.studhelper.screens.mainFrames.student.myGroup.GroupViewModel
 import com.example.studhelper.screens.mainFrames.student.profile.ProfileViewModel
 import com.example.studhelper.screens.mainFrames.student.queue.SubjectViewModel
+import kotlinx.coroutines.CoroutineScope
 
+@SuppressLint("SuspiciousIndentation")
 @Composable
-fun SubjectCard(subject: Subject, deleteSubject: (Subject)->Unit, subjectViewModel: SubjectViewModel, profileViewModel: ProfileViewModel, navController: NavController) {
+fun SubjectCard(subject: Subject, deleteSubject: (Subject)->Unit, subjectViewModel: SubjectViewModel, profileViewModel: ProfileViewModel, navController: NavHostController, scaffoldState: ScaffoldState, coroutineScope: CoroutineScope) {
     var color = Color.Green
     val allCount = loadGroup(profileViewModel).size
     val currentCount = subject.students.size
@@ -100,7 +101,7 @@ fun SubjectCard(subject: Subject, deleteSubject: (Subject)->Unit, subjectViewMod
                             )
                         }
                             if (profileViewModel.currentProfile.admin) {
-                                Column(modifier = Modifier.clickable { deleteSubject(subject) }) {
+                                Column(modifier = Modifier.clickable { QueueAction(profileViewModel).deleteQueue(subject.id,profileViewModel, navController,scaffoldState, coroutineScope) }) {
                                 CustomButton(
                                     action = {deleteSubject(subject)},
                                     name = "X",

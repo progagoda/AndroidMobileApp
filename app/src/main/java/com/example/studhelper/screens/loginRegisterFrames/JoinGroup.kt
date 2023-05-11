@@ -19,20 +19,18 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.studhelper.components.CustomButton
 import com.example.studhelper.components.Input
-import com.example.studhelper.funtions.joinGroup
-import com.example.studhelper.screens.mainFrames.student.myGroup.GroupViewModel
+import com.example.studhelper.funtions.GroupAction
 import com.example.studhelper.screens.mainFrames.student.profile.ProfileViewModel
 
 //TODO сдедать реализацию присоединения к группе в виде соотв функций
 @Composable
-fun JoinGroup(navController: NavHostController,profileViewModel: ProfileViewModel,
-groupViewModel: GroupViewModel){
+fun JoinGroup(navController: NavHostController,profileViewModel: ProfileViewModel){
     var groupCode = rememberSaveable { mutableStateOf("") }
     val scaffoldState = rememberScaffoldState()
     val coroutineScope = rememberCoroutineScope()
     Scaffold(
         modifier = Modifier,
-        scaffoldState = scaffoldState // attaching `scaffoldState` to the `Scaffold`
+        scaffoldState = scaffoldState
     ) {
         Column(
             modifier = Modifier
@@ -54,7 +52,7 @@ groupViewModel: GroupViewModel){
                 text = groupCode.value,
                 onTextChange = { groupCode.value = it })
             CustomButton(action = {
-               joinGroup(profileViewModel,groupViewModel,groupCode,navController,scaffoldState,coroutineScope)
+                GroupAction(profileViewModel).joinGroup(profileViewModel,groupCode,navController,scaffoldState,coroutineScope)
             }, name = "Join")
         }
     }

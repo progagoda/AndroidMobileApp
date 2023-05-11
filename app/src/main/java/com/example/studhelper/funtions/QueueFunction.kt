@@ -29,23 +29,15 @@ fun createQueue(input: MutableState<String>, profileViewModel: ProfileViewModel,
         }
     }
     else {
-        addSubject(Subject(name = input.value, profileViewModel.currentProfile, listOf()))
+        addSubject(Subject(
+            name = input.value,
+            admin = profileViewModel.currentProfile,
+            students = listOf()
+        ))
         navController.navigate(Routes.Queue.route)
     }
 }
 
-fun deleteQueue(currentProfile: Profile,scaffoldState: ScaffoldState, subject: Subject,
-                coroutineScope: CoroutineScope,subjectViewModel: SubjectViewModel) {
-    if (currentProfile.group == subject.admin.group && currentProfile.admin){
-        subjectViewModel.deleteSubject(subject)
-    }
-    else{
-        coroutineScope.launch{
-            scaffoldState.snackbarHostState.showSnackbar(
-                message = "У вас нет прав на удаление очереди")
-        }
-    }
-}
 fun goToQueue(subject: Subject, navController: NavController, subjectViewModel: SubjectViewModel){
     subjectViewModel.currentSubject = subject
     navController.navigate(Routes.SubjectQueue.route)
@@ -56,5 +48,3 @@ fun checkStateStudent(subject:Subject, profile: Profile): Boolean {
     }
     return false
 }
-fun subscribeQueue(){}
-fun unSubscribeQueue(){}
