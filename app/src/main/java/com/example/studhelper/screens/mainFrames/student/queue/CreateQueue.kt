@@ -45,7 +45,7 @@ fun CreateQueue(
             verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically)
         ) {
             Input(name = "Имя очереди", text = input , onTextChange = {input=it})
-            CustomButton(name ="Добавить очередь", action={QueueAction().createQueue(input,profileViewModel,navController, scaffoldState, coroutineScope)})
+            CustomButton(name ="Добавить очередь", action={QueueAction(profileViewModel).createQueue(input,profileViewModel,navController, scaffoldState, coroutineScope)})
         }
     }
 }

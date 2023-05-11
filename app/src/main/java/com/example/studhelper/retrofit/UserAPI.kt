@@ -19,16 +19,16 @@ interface UserAPI {
     @POST("users/register")
     fun register(@Body registerRequest: RegisterRequest): Call<Void>
 
-    @POST("groups")
+    @POST("group")
     fun createGroup(@Body groupCreateRequest: GroupCreateRequest): Call<GroupCreds>
 
-    @PATCH("groups")
+    @PATCH("group")
     fun joinGroup(@Body enterGroupRequest: EnterGroupRequest): Call<Void>
 
-    @GET("groups")
+    @GET("group")
     fun getGroup(): Call<GroupCreds>
 
-    @DELETE("groups")
+    @DELETE("group")
     fun deleteGroup(): Call<Void>
 
     @PATCH("group/quit")

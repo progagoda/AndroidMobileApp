@@ -52,7 +52,7 @@ fun JoinGroup(navController: NavHostController,profileViewModel: ProfileViewMode
                 text = groupCode.value,
                 onTextChange = { groupCode.value = it })
             CustomButton(action = {
-                GroupAction().joinGroup(profileViewModel,groupCode,navController,scaffoldState,coroutineScope)
+                GroupAction(profileViewModel).joinGroup(profileViewModel,groupCode,navController,scaffoldState,coroutineScope)
             }, name = "Join")
         }
     }

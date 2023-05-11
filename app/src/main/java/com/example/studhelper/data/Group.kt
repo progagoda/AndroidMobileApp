@@ -6,7 +6,7 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class Group(
     var name: String,
-    val code: String,
+    var code: String,
 ) : Parcelable
 
 private val groupDB = listOf<Group>(  Group("P33131", "123213"))

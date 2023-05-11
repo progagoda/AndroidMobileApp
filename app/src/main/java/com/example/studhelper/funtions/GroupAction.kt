@@ -13,6 +13,7 @@ import com.example.studhelper.screens.mainFrames.student.myGroup.GroupViewModel
 import com.example.studhelper.screens.mainFrames.student.profile.ProfileViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import okhttp3.Credentials
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
@@ -21,14 +22,27 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class GroupAction {
+class GroupAction(profileViewModel: ProfileViewModel) {
     val interceptor = HttpLoggingInterceptor()
 
     init {
         interceptor.level = HttpLoggingInterceptor.Level.BODY
     }
 
-    val client = OkHttpClient.Builder().addInterceptor(interceptor).build()
+    val client = OkHttpClient.Builder()
+        .addInterceptor(interceptor)
+        .addInterceptor { chain ->
+            val credentials: String = Credentials.basic(
+                profileViewModel.currentProfile.login,
+                profileViewModel.currentProfile.password
+            )
+
+            val newRequest = chain.request().newBuilder()
+                .addHeader("Authorization", credentials)
+                .build()
+            chain.proceed(newRequest)
+        }
+        .build()
     val retrofit: Retrofit = Retrofit.Builder().baseUrl("http://192.168.31.212:8080")
         .addConverterFactory(GsonConverterFactory.create())
         .client(client)
@@ -51,12 +65,13 @@ class GroupAction {
             return
         }
         val groupCreateRequest: GroupCreateRequest = GroupCreateRequest(groupNumber)
-        val sendObject = Group("123","123")
+        var sendObject = Group(groupNumber,"123")
         userAPI.createGroup(groupCreateRequest).enqueue(object : Callback<GroupCreds> {
             override fun onResponse(call: Call<GroupCreds>, response: Response<GroupCreds>) {
                 if (response.isSuccessful) {
                     val groupCreds = response.body()
                     if (groupCreds != null) {
+                        sendObject.code = response.body()!!.inviteCode!!
                         profileViewModel.currentProfile.group= sendObject
                         profileViewModel.currentProfile.admin= true
                         navController.navigate(Routes.Queue.route)
@@ -78,9 +93,9 @@ class GroupAction {
             }
 
             override fun onFailure(call: Call<GroupCreds>, t: Throwable) {
-                profileViewModel.currentProfile.group= sendObject
-                profileViewModel.currentProfile.admin= true
-                navController.navigate(Routes.Queue.route)
+//                profileViewModel.currentProfile.group= sendObject
+//                profileViewModel.currentProfile.admin= true
+//                navController.navigate(Routes.Queue.route)
                 //TODO("Not yet implemented")
             }
         })
@@ -129,10 +144,10 @@ class GroupAction {
                 }
 
                 override fun onFailure(call: Call<Void>, t: Throwable) {
-                    profileViewModel.currentProfile.group=sendObject
-                    profileViewModel.currentProfile.admin = false
-                    navController.navigate(Routes.Queue.route)
-                    //TODO("Not yet implemented")
+//                    profileViewModel.currentProfile.group=sendObject
+//                    profileViewModel.currentProfile.admin = false
+//                    navController.navigate(Routes.Queue.route)
+//                    //TODO("Not yet implemented")
                 }
             })
     }

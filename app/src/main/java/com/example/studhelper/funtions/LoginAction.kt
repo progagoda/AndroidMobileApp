@@ -33,11 +33,14 @@ class LoginAction() {
         interceptor.level = HttpLoggingInterceptor.Level.BODY
     }
 
-    val client = OkHttpClient.Builder().addInterceptor(interceptor).build()
+    val clientAuth = OkHttpClient.Builder().addInterceptor(interceptor)
+        .build()
+
     val retrofit: Retrofit = Retrofit.Builder().baseUrl("http://192.168.31.212:8080")
         .addConverterFactory(GsonConverterFactory.create())
-        .client(client)
+        .client(clientAuth)
         .build()
+
     val userAPI: UserAPI = retrofit.create(UserAPI::class.java)
 
     fun register(
@@ -87,19 +90,19 @@ class LoginAction() {
             }
 
             override fun onFailure(call: Call<Void>, t: Throwable) {
-                profileViewModel.currentProfile = Profile( fullName = registerRequest.fullName,
-                    login = registerRequest.login,
-                    password = registerRequest.password,
-                    admin = false,
-                    group = Group(name="", code=""))
-                navController.navigate(Routes.ChooseGroup.route)
-                coroutineScope.launch {
-                    t.message?.let {
-                        scaffoldState.snackbarHostState.showSnackbar(
-                            message = it
-                        )
-                    }
-                }
+//                profileViewModel.currentProfile = Profile( fullName = registerRequest.fullName,
+//                    login = registerRequest.login,
+//                    password = registerRequest.password,
+//                    admin = false,
+//                    group = Group(name="", code=""))
+//                navController.navigate(Routes.ChooseGroup.route)
+//                coroutineScope.launch {
+//                    t.message?.let {
+//                        scaffoldState.snackbarHostState.showSnackbar(
+//                            message = it
+//                        )
+//                    }
+//                }
             }
         })
     }
@@ -149,13 +152,13 @@ class LoginAction() {
                 }
 
                 override fun onFailure(call: Call<Void>, t: Throwable) {
-                    profileViewModel.currentProfile = sendObject
-                    redirect { navController.navigate(Routes.ChooseGroup.route)}
-                    coroutineScope.launch {
-                        scaffoldState.snackbarHostState.showSnackbar(
-                            message = "Cервер упал"
-                        )
-                    }
+//                    profileViewModel.currentProfile = sendObject
+//                    redirect { navController.navigate(Routes.ChooseGroup.route)}
+//                    coroutineScope.launch {
+//                        scaffoldState.snackbarHostState.showSnackbar(
+//                            message = "Cервер упал"
+//                        )
+//                    }
                 }
             })
         }

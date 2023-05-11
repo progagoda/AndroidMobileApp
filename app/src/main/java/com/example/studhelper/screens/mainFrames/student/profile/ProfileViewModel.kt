@@ -9,13 +9,15 @@ import com.example.studhelper.data.Group
 import com.example.studhelper.data.Profile
 import com.example.studhelper.data.ProfilesRepo
 import com.example.studhelper.screens.loginRegisterFrames.Routes
+import com.google.inject.Singleton
 
 //TODO добавить метод проверки админ это или нет
+@Singleton
 class ProfileViewModel:ViewModel(){
     var profiles by mutableStateOf(ProfilesRepo.getProfiles())
     var currentProfile by mutableStateOf(profiles[0])
     fun addProfile(profile: Profile){
-        if(profile.fullName =="" || profile.password.equals(null)|| profile.login.equals(null)){
+        if(profile.fullName == "" || profile.password.equals(null)|| profile.login.equals(null)){
         }
         else {
             //TODO здесь мы делаем запрос к бд на создание профиля

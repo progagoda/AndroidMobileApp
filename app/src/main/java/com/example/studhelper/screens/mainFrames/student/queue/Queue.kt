@@ -40,7 +40,7 @@ fun Queue(
     val scaffoldState = rememberScaffoldState()
     val coroutineScope = rememberCoroutineScope()
     subjectViewModel.subjects =
-        QueueAction().getAllQueues(profileViewModel, navController, scaffoldState, coroutineScope)
+        QueueAction(profileViewModel).getAllQueues(profileViewModel, navController, scaffoldState, coroutineScope)
     Scaffold(
         bottomBar = { BottomMenu(navController = navController, currentPage = "Очереди") },
         scaffoldState = scaffoldState,

@@ -55,7 +55,7 @@ fun CreateGroup(
             name = "Group number",
             text = groupNumber,
             onTextChange = { groupNumber = it })
-        CustomButton(action={ GroupAction().createGroup(profileViewModel,groupNumber,navController,scaffoldState,coroutineScope) }, name = "Create")
+        CustomButton(action={ GroupAction(profileViewModel).createGroup(profileViewModel,groupNumber,navController,scaffoldState,coroutineScope) }, name = "Create")
     }
     }
 }
