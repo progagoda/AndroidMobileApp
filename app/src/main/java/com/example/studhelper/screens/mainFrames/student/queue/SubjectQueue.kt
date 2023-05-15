@@ -9,15 +9,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.material.*
+import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,6 +23,7 @@ import androidx.navigation.NavController
 import com.example.studhelper.InterFamily
 import com.example.studhelper.components.BottomMenu
 import com.example.studhelper.components.GroupmateCard
+import com.example.studhelper.funtions.QueueAction
 import com.example.studhelper.funtions.checkStateStudent
 import com.example.studhelper.screens.mainFrames.student.profile.ProfileViewModel
 
@@ -56,8 +51,11 @@ fun SubjectQueue(
         buttonText = "Отписаться"
         buttonColor = Color.Red
     }
+    val scaffoldState = rememberScaffoldState()
+    val coroutineScope = rememberCoroutineScope()
     Scaffold(
         bottomBar = { BottomMenu(navController = navController, currentPage = "Очереди") },
+        scaffoldState = scaffoldState,
         content = {
             LazyColumn(
                 modifier = Modifier
@@ -93,11 +91,13 @@ fun SubjectQueue(
                     Button(
                         onClick = {
                             if (!state) {
-                                subjectViewModel.subscribe(
-                                    profileViewModel.currentProfile,
-                                    subjectViewModel.currentSubject
-                                )
+                                QueueAction(profileViewModel).enterQueue(subjectViewModel.currentSubject.id,profileViewModel,scaffoldState, coroutineScope )
+//                                subjectViewModel.subscribe(
+//                                    profileViewModel.currentProfile,
+//                                    subjectViewModel.currentSubject
+//                                )
                                 state = !state} else{
+                                QueueAction(profileViewModel).quitQueue(subjectViewModel.currentSubject.id,profileViewModel,scaffoldState, coroutineScope )
                                 subjectViewModel.unsubscribe(
                                     profileViewModel.currentProfile,
                                     subjectViewModel.currentSubject

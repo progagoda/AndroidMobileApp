@@ -47,63 +47,29 @@ class QueueAction(profileViewModel: ProfileViewModel) {
         .client(client)
         .build()
     val groupAPI: GroupAPI = retrofit.create(GroupAPI::class.java)
-
     fun getAllQueues(
         profileViewModel: ProfileViewModel,
         navController: NavHostController,
         scaffoldState: ScaffoldState,
         coroutineScope: CoroutineScope
-    ): MutableList<Subject> {
-        val subjectList = mutableListOf<Subject>(
-            Subject(
-                name = "Методы и средства программной инженерии",
-                admin = Profile(
-                    "Артем Сергеевич",
-                    GroupsRepo.getGroups()[0],
-                    R.drawable.avatar_bad_breaking,
-                    "285384",
-                    "12345",
-                    true
-                ),
-                students = listOf<Profile>(
-                    Profile(
-                        "Артем Ваховскович",
-                        GroupsRepo.getGroups()[0],
-                        R.drawable.avatar_bad_breaking,
-                        "285381",
-                        "12345",
-                        false
-                    ),
-                    Profile(
-                        "Артем Крисанович",
-                        GroupsRepo.getGroups()[0],
-                        R.drawable.avatar_bad_breaking,
-                        "285382",
-                        "12345",
-                        false
-                    ),
-                )
-            )
-        )
-//        navController.navigate(Routes.Queue.route)
-        return subjectList
-        groupAPI.getAllQueues().enqueue(object: Callback<QueueList> {
+    ) {
+
+        groupAPI.getAllQueues().enqueue(object : Callback<QueueList> {
             override fun onResponse(call: Call<QueueList>, response: Response<QueueList>) {
                 if (response.isSuccessful) {
-//                    return subjectList
-                }
-                else {
+//                    return response.body().queues
+                } else {
                     val errorMessage: String = "Unknown error"
                     coroutineScope.launch {
                         scaffoldState.snackbarHostState.showSnackbar(
                             message = errorMessage
                         )
                     }
-//                    return subjectList;
+//                    return response.body().queues
                 }
             }
 
-            override fun onFailure(call: Call<QueueList>, t: Throwable){
+            override fun onFailure(call: Call<QueueList>, t: Throwable) {
                 //TODO("Not yet implemented")
                 //return subjectList
             }
@@ -118,45 +84,10 @@ class QueueAction(profileViewModel: ProfileViewModel) {
         coroutineScope: CoroutineScope
     ) {
         val createQueueRequest = CreateQueueRequest(queueName)
-//        val subjectList = mutableListOf<Subject>(
-//            Subject(
-//                name = "Методы и средства программной инженерии",
-//                admin = Profile(
-//                    "Артем Сергеевич",
-//                    GroupsRepo.getGroups()[0],
-//                    R.drawable.avatar_bad_breaking,
-//                    "285384",
-//                    "12345",
-//                    true
-//                ),
-//                students = listOf<Profile>(
-//                    Profile(
-//                        "Артем Ваховскович",
-//                        GroupsRepo.getGroups()[0],
-//                        R.drawable.avatar_bad_breaking,
-//                        "285381",
-//                        "12345",
-//                        false
-//                    ),
-//                    Profile(
-//                        "Артем Крисанович",
-//                        GroupsRepo.getGroups()[0],
-//                        R.drawable.avatar_bad_breaking,
-//                        "285382",
-//                        "12345",
-//                        false
-//                    ),
-//                )
-//            )
-//        )
-//        var addSubject = Subject(2,"asda",profileViewModel.currentProfile,profileViewModel.profiles)
-//        subjectList.add(addSubject)
-        navController.navigate(Routes.Queue.route)
         groupAPI.createQueue(createQueueRequest).enqueue(object: Callback<Void> {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
                 if (response.isSuccessful) {
-//                    val subject = Subject(1, queueName, profileViewModel.currentProfile)
-//                    subjectList.add(subject)
+                          navController.navigate(Routes.Queue.route)
                 }
                 else {
                     val errorMessage: String = if (response.code() == 404)
@@ -172,7 +103,7 @@ class QueueAction(profileViewModel: ProfileViewModel) {
             }
 
             override fun onFailure(call: Call<Void>, t: Throwable) {
-                TODO("Not yet implemented")
+                //TODO("Not yet implemented")
             }
         })
     }
@@ -191,7 +122,7 @@ class QueueAction(profileViewModel: ProfileViewModel) {
                 response: Response<StudentsInQueueList>
             ) {
                 if (response.isSuccessful) {
-                    //
+//                    return response.body().students
                 }
                 else {
                     val errorMessage = "Unknown error"
@@ -204,7 +135,7 @@ class QueueAction(profileViewModel: ProfileViewModel) {
             }
 
             override fun onFailure(call: Call<StudentsInQueueList>, t: Throwable) {
-                TODO("Not yet implemented")
+                //TODO("Not yet implemented")
             }
         })
     }
@@ -244,8 +175,6 @@ class QueueAction(profileViewModel: ProfileViewModel) {
     fun enterQueue(
         queueId: Int,
         profileViewModel: ProfileViewModel,
-        groupViewModel: GroupViewModel,
-        navController: NavHostController,
         scaffoldState: ScaffoldState,
         coroutineScope: CoroutineScope
     ) {
@@ -278,15 +207,14 @@ class QueueAction(profileViewModel: ProfileViewModel) {
     fun quitQueue(
         queueId: Int,
         profileViewModel: ProfileViewModel,
-        groupViewModel: GroupViewModel,
-        navController: NavHostController,
         scaffoldState: ScaffoldState,
         coroutineScope: CoroutineScope
     ) {
         groupAPI.quitQueue(queueId).enqueue(object: Callback<Void> {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
                 if (response.isSuccessful) {
-                    //
+//                    return response.body()
+                    // здесь нужно вернуть обновленный список subjectViewModel.currentSubject.students
                 }
                 else {
                     val errorMessage: String = if (response.code() == 404)

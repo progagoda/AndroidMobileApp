@@ -90,19 +90,19 @@ class LoginAction() {
             }
 
             override fun onFailure(call: Call<Void>, t: Throwable) {
-//                profileViewModel.currentProfile = Profile( fullName = registerRequest.fullName,
-//                    login = registerRequest.login,
-//                    password = registerRequest.password,
-//                    admin = false,
-//                    group = Group(name="", code=""))
-//                navController.navigate(Routes.ChooseGroup.route)
-//                coroutineScope.launch {
-//                    t.message?.let {
-//                        scaffoldState.snackbarHostState.showSnackbar(
-//                            message = it
-//                        )
-//                    }
-//                }
+                profileViewModel.currentProfile = Profile( fullName = registerRequest.fullName,
+                    login = registerRequest.login,
+                    password = registerRequest.password,
+                    admin = false,
+                    group = Group(name="", code=""))
+                navController.navigate(Routes.ChooseGroup.route)
+                coroutineScope.launch {
+                    t.message?.let {
+                        scaffoldState.snackbarHostState.showSnackbar(
+                            message = it
+                        )
+                    }
+                }
             }
         })
     }
@@ -152,13 +152,13 @@ class LoginAction() {
                 }
 
                 override fun onFailure(call: Call<Void>, t: Throwable) {
-//                    profileViewModel.currentProfile = sendObject
-//                    redirect { navController.navigate(Routes.ChooseGroup.route)}
-//                    coroutineScope.launch {
-//                        scaffoldState.snackbarHostState.showSnackbar(
-//                            message = "Cервер упал"
-//                        )
-//                    }
+                    profileViewModel.currentProfile = sendObject
+                    redirect { navController.navigate(Routes.ChooseGroup.route)}
+                    coroutineScope.launch {
+                        scaffoldState.snackbarHostState.showSnackbar(
+                            message = "Cервер упал"
+                        )
+                    }
                 }
             })
         }

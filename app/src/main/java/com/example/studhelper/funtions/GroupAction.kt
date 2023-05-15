@@ -93,9 +93,9 @@ class GroupAction(profileViewModel: ProfileViewModel) {
             }
 
             override fun onFailure(call: Call<GroupCreds>, t: Throwable) {
-//                profileViewModel.currentProfile.group= sendObject
-//                profileViewModel.currentProfile.admin= true
-//                navController.navigate(Routes.Queue.route)
+                profileViewModel.currentProfile.group= sendObject
+                profileViewModel.currentProfile.admin= true
+                navController.navigate(Routes.Queue.route)
                 //TODO("Not yet implemented")
             }
         })
@@ -144,9 +144,9 @@ class GroupAction(profileViewModel: ProfileViewModel) {
                 }
 
                 override fun onFailure(call: Call<Void>, t: Throwable) {
-//                    profileViewModel.currentProfile.group=sendObject
-//                    profileViewModel.currentProfile.admin = false
-//                    navController.navigate(Routes.Queue.route)
+                    profileViewModel.currentProfile.group=sendObject
+                    profileViewModel.currentProfile.admin = false
+                    navController.navigate(Routes.Queue.route)
 //                    //TODO("Not yet implemented")
                 }
             })
@@ -159,7 +159,7 @@ class GroupAction(profileViewModel: ProfileViewModel) {
         userAPI.getGroup().enqueue(object: Callback<GroupCreds> {
             override fun onResponse(call: Call<GroupCreds>, response: Response<GroupCreds>) {
                 if (response.isSuccessful) {
-                    //
+//                   return response.body()
                 }
                 else {
                     val errorMessage: String = if (response.code() == 400)
@@ -215,7 +215,6 @@ class GroupAction(profileViewModel: ProfileViewModel) {
 
     fun exitGroup(
         profileViewModel: ProfileViewModel,
-        groupViewModel: GroupViewModel,
         navController: NavHostController,
         scaffoldState: ScaffoldState,
         coroutineScope: CoroutineScope
@@ -223,7 +222,7 @@ class GroupAction(profileViewModel: ProfileViewModel) {
         userAPI.exitGroup().enqueue(object: Callback<Void> {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
                 if (response.isSuccessful) {
-                    //
+                    navController.navigate(Routes.Login.route)
                 }
                 else {
                     val errorMessage: String = if (response.code() == 400)
