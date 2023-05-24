@@ -20,6 +20,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.Optional
 
 class QueueAction(profileViewModel: ProfileViewModel) {
     val interceptor = HttpLoggingInterceptor()
@@ -52,12 +53,12 @@ class QueueAction(profileViewModel: ProfileViewModel) {
         navController: NavHostController,
         scaffoldState: ScaffoldState,
         coroutineScope: CoroutineScope
-    ) {
-
+    ) : Array<QueueCreds> {
+        var aux: Array<QueueCreds> = emptyArray()
         groupAPI.getAllQueues().enqueue(object : Callback<QueueList> {
             override fun onResponse(call: Call<QueueList>, response: Response<QueueList>) {
                 if (response.isSuccessful) {
-//                    return response.body().queues
+                    aux = response.body()!!.queues
                 } else {
                     val errorMessage: String = "Unknown error"
                     coroutineScope.launch {
@@ -74,6 +75,7 @@ class QueueAction(profileViewModel: ProfileViewModel) {
                 //return subjectList
             }
         })
+        return aux
     }
 
     fun createQueue(
@@ -87,7 +89,7 @@ class QueueAction(profileViewModel: ProfileViewModel) {
         groupAPI.createQueue(createQueueRequest).enqueue(object: Callback<Void> {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
                 if (response.isSuccessful) {
-                          navController.navigate(Routes.Queue.route)
+                    navController.navigate(Routes.Queue.route)
                 }
                 else {
                     val errorMessage: String = if (response.code() == 404)
@@ -115,14 +117,15 @@ class QueueAction(profileViewModel: ProfileViewModel) {
         navController: NavHostController,
         scaffoldState: ScaffoldState,
         coroutineScope: CoroutineScope
-    ) {
+    ) : Array<StudentInQueueCreds> {
+        var aux : Array<StudentInQueueCreds> = emptyArray()
         groupAPI.getQueue(queueId).enqueue(object: Callback<StudentsInQueueList> {
             override fun onResponse(
                 call: Call<StudentsInQueueList>,
                 response: Response<StudentsInQueueList>
             ) {
                 if (response.isSuccessful) {
-//                    return response.body().students
+                    aux = response.body()!!.students
                 }
                 else {
                     val errorMessage = "Unknown error"
@@ -138,6 +141,7 @@ class QueueAction(profileViewModel: ProfileViewModel) {
                 //TODO("Not yet implemented")
             }
         })
+        return aux
     }
 
     fun deleteQueue(
@@ -207,12 +211,21 @@ class QueueAction(profileViewModel: ProfileViewModel) {
     fun quitQueue(
         queueId: Int,
         profileViewModel: ProfileViewModel,
+        subjectViewModel: SubjectViewModel,
         scaffoldState: ScaffoldState,
         coroutineScope: CoroutineScope
-    ) {
+    ) : List<Profile>{
+        var aux: Array<Subject> = emptyArray()
         groupAPI.quitQueue(queueId).enqueue(object: Callback<Void> {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
                 if (response.isSuccessful) {
+                    for (i in 0..subjectViewModel.currentSubject.students.size) {
+                        val profile = subjectViewModel.currentSubject.students[i]
+                        if (profile.login == profileViewModel.currentProfile.login) {
+                            subjectViewModel.currentSubject.students.drop(i)
+                            break
+                        }
+                    }
 //                    return response.body()
                     // здесь нужно вернуть обновленный список subjectViewModel.currentSubject.students
                 }
@@ -235,5 +248,6 @@ class QueueAction(profileViewModel: ProfileViewModel) {
                 TODO("Not yet implemented")
             }
         })
+        return subjectViewModel.currentSubject.students
     }
 }

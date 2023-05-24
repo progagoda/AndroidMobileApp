@@ -97,7 +97,12 @@ fun SubjectQueue(
 //                                    subjectViewModel.currentSubject
 //                                )
                                 state = !state} else{
-                                QueueAction(profileViewModel).quitQueue(subjectViewModel.currentSubject.id,profileViewModel,scaffoldState, coroutineScope )
+                                QueueAction(profileViewModel)
+                                    .quitQueue(subjectViewModel.currentSubject.id,
+                                        profileViewModel,
+                                        subjectViewModel,
+                                        scaffoldState,
+                                        coroutineScope)
                                 subjectViewModel.unsubscribe(
                                     profileViewModel.currentProfile,
                                     subjectViewModel.currentSubject
