@@ -175,7 +175,7 @@ class GroupAction(profileViewModel: ProfileViewModel) {
             }
 
             override fun onFailure(call: Call<GroupCreds>, t: Throwable) {
-                TODO("Not yet implemented")
+               // TODO("Not yet implemented")
             }
         })
     }
@@ -208,7 +208,7 @@ class GroupAction(profileViewModel: ProfileViewModel) {
             }
 
             override fun onFailure(call: Call<Void>, t: Throwable) {
-                TODO("Not yet implemented")
+                //TODO("Not yet implemented")
             }
         })
     }
@@ -238,7 +238,7 @@ class GroupAction(profileViewModel: ProfileViewModel) {
             }
 
             override fun onFailure(call: Call<Void>, t: Throwable) {
-                TODO("Not yet implemented")
+                //TODO("Not yet implemented")
             }
         })
     }

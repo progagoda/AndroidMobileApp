@@ -17,6 +17,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.Group
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -26,6 +27,7 @@ import com.example.studhelper.InterFamily
 import com.example.studhelper.components.BottomMenu
 import com.example.studhelper.components.CustomButton
 import com.example.studhelper.components.GroupmateCard
+import com.example.studhelper.data.Group
 import com.example.studhelper.data.GroupCreds
 import com.example.studhelper.funtions.GroupAction
 import com.example.studhelper.screens.mainFrames.student.profile.ProfileViewModel
@@ -35,16 +37,17 @@ import com.example.studhelper.screens.mainFrames.student.profile.ProfileViewMode
 fun MyGroup(navController: NavHostController, profileViewModel: ProfileViewModel, groupViewModel: GroupViewModel) {
     val scaffoldState = rememberScaffoldState()
     val coroutineScope = rememberCoroutineScope()
-    var currentGroup:GroupCreds = GroupAction(profileViewModel).getGroup(scaffoldState, coroutineScope)
-    var profiles = GroupAction(profileViewModel).getStudent()
+    val currentGroup= listOf<Group>(Group("P33131","12345"))
+//    val profiles = GroupAction(profileViewModel).getStudent()
+    val profiles = profileViewModel.profiles
     Scaffold(
         bottomBar = { BottomMenu(navController = navController, currentPage = "Моя группа") },
         scaffoldState = scaffoldState,
         content = {
             LazyColumn(
                 modifier = Modifier
-                    .fillMaxHeight(0.93f)
-                    .padding(horizontal = 10.dp, vertical = 10.dp),
+                        .fillMaxHeight(0.93f)
+                        .padding(horizontal = 10.dp, vertical = 10.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
 
             ) {
@@ -57,7 +60,7 @@ fun MyGroup(navController: NavHostController, profileViewModel: ProfileViewModel
                         color = Color.White
                     )
                     if(profileViewModel.currentProfile.admin){
-                        currentGroup.inviteCode?.let { it1 ->
+                        currentGroup[0].name.let { it1 ->
                             OutlinedTextField(
                                 value = it1,
                                 onValueChange={},
