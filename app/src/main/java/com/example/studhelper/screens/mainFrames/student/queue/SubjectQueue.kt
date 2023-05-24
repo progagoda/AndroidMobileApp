@@ -23,6 +23,9 @@ import androidx.navigation.NavController
 import com.example.studhelper.InterFamily
 import com.example.studhelper.components.BottomMenu
 import com.example.studhelper.components.GroupmateCard
+import com.example.studhelper.data.Group
+import com.example.studhelper.data.Profile
+import com.example.studhelper.data.Subject
 import com.example.studhelper.funtions.QueueAction
 import com.example.studhelper.funtions.checkStateStudent
 import com.example.studhelper.screens.mainFrames.student.profile.ProfileViewModel
@@ -34,6 +37,13 @@ fun SubjectQueue(
     subjectViewModel: SubjectViewModel,
     profileViewModel: ProfileViewModel
 ) {
+    val scaffoldState = rememberScaffoldState()
+    val coroutineScope = rememberCoroutineScope()
+    val students = QueueAction(profileViewModel).getQueue(subjectViewModel.currentSubject.id,profileViewModel,navController,scaffoldState, coroutineScope)
+    subjectViewModel.currentSubject.students= listOf<Profile>()
+    for(i in students){
+        subjectViewModel.currentSubject.students += listOf(Profile(i.fullName, profileViewModel.currentProfile.group, 123,"123","123",false))
+    }
     val subscribers by rememberSaveable {
         mutableStateOf(subjectViewModel.currentSubject.students)
     }
@@ -51,8 +61,6 @@ fun SubjectQueue(
         buttonText = "Отписаться"
         buttonColor = Color.Red
     }
-    val scaffoldState = rememberScaffoldState()
-    val coroutineScope = rememberCoroutineScope()
     Scaffold(
         bottomBar = { BottomMenu(navController = navController, currentPage = "Очереди") },
         scaffoldState = scaffoldState,

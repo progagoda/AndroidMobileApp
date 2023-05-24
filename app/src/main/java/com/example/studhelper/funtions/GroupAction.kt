@@ -190,7 +190,7 @@ class GroupAction(profileViewModel: ProfileViewModel) {
         userAPI.deleteGroup().enqueue(object: Callback<Void> {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
                 if (response.isSuccessful) {
-                    //
+                    navController.navigate(Routes.ChooseGroup.route)
                 }
                 else {
                     val errorMessage: String = if (response.code() == 400)

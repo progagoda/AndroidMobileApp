@@ -3,11 +3,9 @@ package com.example.studhelper.funtions
 import androidx.compose.material.ScaffoldState
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
-import com.example.studhelper.R
 import com.example.studhelper.data.*
 import com.example.studhelper.retrofit.GroupAPI
 import com.example.studhelper.screens.loginRegisterFrames.Routes
-import com.example.studhelper.screens.mainFrames.student.myGroup.GroupViewModel
 import com.example.studhelper.screens.mainFrames.student.profile.ProfileViewModel
 import com.example.studhelper.screens.mainFrames.student.queue.SubjectViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -20,7 +18,6 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.util.Optional
 
 class QueueAction(profileViewModel: ProfileViewModel) {
     val interceptor = HttpLoggingInterceptor()
@@ -50,7 +47,7 @@ class QueueAction(profileViewModel: ProfileViewModel) {
     val groupAPI: GroupAPI = retrofit.create(GroupAPI::class.java)
     fun getAllQueues(
         profileViewModel: ProfileViewModel,
-        navController: NavHostController,
+        navController: NavController,
         scaffoldState: ScaffoldState,
         coroutineScope: CoroutineScope
     ) : Array<QueueCreds> {
@@ -81,6 +78,7 @@ class QueueAction(profileViewModel: ProfileViewModel) {
     fun createQueue(
         queueName: String,
         profileViewModel: ProfileViewModel,
+        subjectViewModel: SubjectViewModel,
         navController: NavController,
         scaffoldState: ScaffoldState,
         coroutineScope: CoroutineScope
@@ -89,6 +87,7 @@ class QueueAction(profileViewModel: ProfileViewModel) {
         groupAPI.createQueue(createQueueRequest).enqueue(object: Callback<Void> {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
                 if (response.isSuccessful) {
+                    subjectViewModel.subjects+= listOf(Subject(1,queueName,profileViewModel.currentProfile, listOf(profileViewModel.currentProfile)))
                     navController.navigate(Routes.Queue.route)
                 }
                 else {
@@ -113,8 +112,7 @@ class QueueAction(profileViewModel: ProfileViewModel) {
     fun getQueue(
         queueId: Int,
         profileViewModel: ProfileViewModel,
-        groupViewModel: GroupViewModel,
-        navController: NavHostController,
+        navController: NavController,
         scaffoldState: ScaffoldState,
         coroutineScope: CoroutineScope
     ) : Array<StudentInQueueCreds> {
@@ -203,7 +201,7 @@ class QueueAction(profileViewModel: ProfileViewModel) {
             }
 
             override fun onFailure(call: Call<Void>, t: Throwable) {
-                TODO("Not yet implemented")
+                //TODO("Not yet implemented")
             }
         })
     }
@@ -245,7 +243,7 @@ class QueueAction(profileViewModel: ProfileViewModel) {
             }
 
             override fun onFailure(call: Call<Void>, t: Throwable) {
-                TODO("Not yet implemented")
+               // TODO("Not yet implemented")
             }
         })
         return subjectViewModel.currentSubject.students
