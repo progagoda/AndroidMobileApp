@@ -29,6 +29,7 @@ import com.example.studhelper.components.CustomButton
 import com.example.studhelper.components.GroupmateCard
 import com.example.studhelper.data.Group
 import com.example.studhelper.data.GroupCreds
+import com.example.studhelper.data.Profile
 import com.example.studhelper.funtions.GroupAction
 import com.example.studhelper.screens.mainFrames.student.profile.ProfileViewModel
 
@@ -37,8 +38,10 @@ import com.example.studhelper.screens.mainFrames.student.profile.ProfileViewMode
 fun MyGroup(navController: NavHostController, profileViewModel: ProfileViewModel, groupViewModel: GroupViewModel) {
     val scaffoldState = rememberScaffoldState()
     val coroutineScope = rememberCoroutineScope()
-    val currentGroup= listOf<Group>(Group("P33131","12345"))
-//    val profiles = GroupAction(profileViewModel).getStudent()
+    val myGroup= GroupAction(profileViewModel).getGroupList(profileViewModel,profileViewModel.currentProfile.group.code,navController,scaffoldState,coroutineScope).students
+    for (i in myGroup){
+       profileViewModel.profiles+= listOf<Profile>(Profile(i.fullName, profileViewModel.currentProfile.group,123,i.login, "123",false ))
+    }
     val profiles = profileViewModel.profiles
     Scaffold(
         bottomBar = { BottomMenu(navController = navController, currentPage = "Моя группа") },
@@ -60,7 +63,7 @@ fun MyGroup(navController: NavHostController, profileViewModel: ProfileViewModel
                         color = Color.White
                     )
                     if(profileViewModel.currentProfile.admin){
-                        currentGroup[0].name.let { it1 ->
+                        profileViewModel.currentProfile.group.code.let { it1 ->
                             OutlinedTextField(
                                 value = it1,
                                 onValueChange={},

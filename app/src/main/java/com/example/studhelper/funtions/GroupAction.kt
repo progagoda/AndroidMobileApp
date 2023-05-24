@@ -8,6 +8,8 @@ import com.example.studhelper.data.Group
 import com.example.studhelper.data.GroupCreateRequest
 import com.example.studhelper.data.GroupCreds
 import com.example.studhelper.data.GroupUserList
+import com.example.studhelper.data.StudentInQueueCreds
+import com.example.studhelper.data.UserCreds
 import com.example.studhelper.retrofit.GroupAPI
 import com.example.studhelper.retrofit.UserAPI
 import com.example.studhelper.screens.loginRegisterFrames.Routes
@@ -58,11 +60,12 @@ class GroupAction(profileViewModel: ProfileViewModel) {
         navController: NavHostController,
         scaffoldState: ScaffoldState,
         coroutineScope: CoroutineScope
-    ) {
+    ): GroupUserList {
+        var aux : Array<UserCreds> = emptyArray()
         groupAPI.getGroupList().enqueue(object : Callback<GroupUserList> {
             override fun onResponse(call: Call<GroupUserList>, response: Response<GroupUserList>) {
                 if (response.isSuccessful) {
-                    //
+                    aux = response.body()!!.students
                 }
                 else {
                     val errorMessage: String = if (response.code() == 400)
@@ -75,11 +78,13 @@ class GroupAction(profileViewModel: ProfileViewModel) {
                         )
                     }
                 }
+
             }
             override fun onFailure(call: Call<GroupUserList>, t: Throwable) {
-                TODO("Not yet implemented")
+                //TODO("Not yet implemented")
             }
         })
+        return GroupUserList(aux)
     }
 
     fun createGroup(
