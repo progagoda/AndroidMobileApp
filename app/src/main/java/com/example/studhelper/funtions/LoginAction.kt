@@ -128,7 +128,7 @@ class LoginAction() {
                 password,
              "Бэк"
             )
-            val sendObject =  Profile( fullName = authRequest.fullName,
+            val sendObject = Profile(fullName = authRequest.fullName,
                 login = authRequest.login,
                 password = authRequest.password,
                 admin = false,
