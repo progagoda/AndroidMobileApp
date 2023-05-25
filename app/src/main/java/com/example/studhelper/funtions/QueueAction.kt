@@ -145,6 +145,7 @@ class QueueAction(profileViewModel: ProfileViewModel) {
     fun deleteQueue(
         queueId: Int,
         profileViewModel: ProfileViewModel,
+        subjectViewModel: SubjectViewModel,
         navController: NavHostController,
         scaffoldState: ScaffoldState,
         coroutineScope: CoroutineScope
@@ -152,6 +153,9 @@ class QueueAction(profileViewModel: ProfileViewModel) {
         groupAPI.deleteQueue(queueId).enqueue(object: Callback<Void> {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
                 if (response.isSuccessful) {
+                    for(i in subjectViewModel.subjects){
+                    if(i.id==queueId)
+                    subjectViewModel.subjects.toMutableList().remove(i) }
                     getAllQueues(profileViewModel,navController,scaffoldState,coroutineScope)
                 }
                 else {
@@ -183,7 +187,7 @@ class QueueAction(profileViewModel: ProfileViewModel) {
         groupAPI.enterQueue(queueId).enqueue(object: Callback<Void> {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
                 if (response.isSuccessful) {
-                    //
+//                    profileViewModel.currentProfile.group=response.body().
                 }
                 else {
                     val errorMessage: String = if (response.code() == 404)
