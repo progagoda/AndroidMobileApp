@@ -101,7 +101,7 @@ fun SubjectCard(subject: Subject, deleteSubject: (Subject)->Unit, subjectViewMod
                             )
                         }
                             if (profileViewModel.currentProfile.admin) {
-                                Column(modifier = Modifier.clickable { QueueAction(profileViewModel).deleteQueue(subject.id,profileViewModel, navController,scaffoldState, coroutineScope) }) {
+                                Column(modifier = Modifier.clickable { QueueAction(profileViewModel).deleteQueue(subject.id, profileViewModel, subjectViewModel, navController,scaffoldState, coroutineScope) }) {
                                 CustomButton(
                                     action = {deleteSubject(subject)},
                                     name = "X",

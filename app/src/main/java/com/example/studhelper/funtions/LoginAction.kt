@@ -163,4 +163,9 @@ class LoginAction() {
             })
         }
     }
+
+    fun logOut(profileViewModel: ProfileViewModel, navController: NavController){
+        profileViewModel.currentProfile=profileViewModel.profiles[0]
+        navController.navigate(Routes.Login.route)
     }
+}

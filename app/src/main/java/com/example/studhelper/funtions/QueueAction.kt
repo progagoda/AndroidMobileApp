@@ -87,7 +87,7 @@ class QueueAction(profileViewModel: ProfileViewModel) {
         groupAPI.createQueue(createQueueRequest).enqueue(object: Callback<Void> {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
                 if (response.isSuccessful) {
-                    subjectViewModel.subjects+= listOf(Subject(1,queueName,profileViewModel.currentProfile, listOf(profileViewModel.currentProfile)))
+                    subjectViewModel.subjects += listOf(Subject(1,queueName,profileViewModel.currentProfile, listOf(profileViewModel.currentProfile)))
                     navController.navigate(Routes.Queue.route)
                 }
                 else {
