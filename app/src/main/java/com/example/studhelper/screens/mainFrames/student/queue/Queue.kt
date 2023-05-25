@@ -39,8 +39,10 @@ fun Queue(
         profileViewModel.currentProfile.admin;// depends on user usual student or admin of group
     val scaffoldState = rememberScaffoldState()
     val coroutineScope = rememberCoroutineScope()
-    subjectViewModel.subjects =
-        QueueAction(profileViewModel).getAllQueues(profileViewModel, navController, scaffoldState, coroutineScope)
+    val subjects = QueueAction(profileViewModel).getAllQueues(profileViewModel, navController, scaffoldState, coroutineScope)
+    for(i in subjects){
+         subjectViewModel.subjects+= listOf(Subject(i.id,i.queueName,profileViewModel.currentProfile, listOf(profileViewModel.currentProfile)))
+    }
     Scaffold(
         bottomBar = { BottomMenu(navController = navController, currentPage = "Очереди") },
         scaffoldState = scaffoldState,

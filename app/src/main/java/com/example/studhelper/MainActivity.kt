@@ -87,7 +87,7 @@ fun ScreenMain(subjectsViewModel: SubjectViewModel, profileViewModel: ProfileVie
         // Another Route : CreateQueue
         composable(Routes.CreateQueue.route) {
             // Register Screen
-            CreateQueue(navController = navController, profileViewModel = profileViewModel)
+            CreateQueue(navController = navController, profileViewModel = profileViewModel, subjectViewModel=subjectsViewModel)
         }
         composable(Routes.SubjectQueue.route){
             SubjectQueue(navController = navController, subjectViewModel = subjectsViewModel, profileViewModel = profileViewModel)

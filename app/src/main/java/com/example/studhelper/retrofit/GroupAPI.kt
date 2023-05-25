@@ -1,6 +1,7 @@
 package com.example.studhelper.retrofit
 
 import com.example.studhelper.data.CreateQueueRequest
+import com.example.studhelper.data.GroupUserList
 import com.example.studhelper.data.QueueList
 import com.example.studhelper.data.StudentsInQueueList
 import retrofit2.Call
@@ -30,4 +31,7 @@ interface GroupAPI {
 
     @PATCH("/group/queues/{queueId}/quit")
     fun quitQueue(@Path("queueId") queueId: Int): Call<Void>
+
+    @GET("/group/users")
+    fun getGroupList(): Call<GroupUserList>
 }

@@ -21,6 +21,7 @@ import com.example.studhelper.screens.mainFrames.student.profile.ProfileViewMode
 fun CreateQueue(
     navController: NavController,
     profileViewModel: ProfileViewModel,
+    subjectViewModel: SubjectViewModel
 ) {
     var input by rememberSaveable { mutableStateOf("") }
     val scaffoldState = rememberScaffoldState()
@@ -45,7 +46,7 @@ fun CreateQueue(
             verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically)
         ) {
             Input(name = "Имя очереди", text = input , onTextChange = {input=it})
-            CustomButton(name ="Добавить очередь", action={QueueAction(profileViewModel).createQueue(input,profileViewModel,navController, scaffoldState, coroutineScope)})
+            CustomButton(name ="Добавить очередь", action={QueueAction(profileViewModel).createQueue(input,profileViewModel,subjectViewModel,navController, scaffoldState, coroutineScope)})
         }
     }
 }

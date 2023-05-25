@@ -7,6 +7,10 @@ import com.example.studhelper.data.EnterGroupRequest
 import com.example.studhelper.data.Group
 import com.example.studhelper.data.GroupCreateRequest
 import com.example.studhelper.data.GroupCreds
+import com.example.studhelper.data.GroupUserList
+import com.example.studhelper.data.StudentInQueueCreds
+import com.example.studhelper.data.UserCreds
+import com.example.studhelper.retrofit.GroupAPI
 import com.example.studhelper.retrofit.UserAPI
 import com.example.studhelper.screens.loginRegisterFrames.Routes
 import com.example.studhelper.screens.mainFrames.student.myGroup.GroupViewModel
@@ -48,6 +52,40 @@ class GroupAction(profileViewModel: ProfileViewModel) {
         .client(client)
         .build()
     val userAPI: UserAPI = retrofit.create(UserAPI::class.java)
+    val groupAPI: GroupAPI = retrofit.create(GroupAPI::class.java)
+
+    fun getGroupList(
+        profileViewModel: ProfileViewModel,
+        groupNumber: String,
+        navController: NavHostController,
+        scaffoldState: ScaffoldState,
+        coroutineScope: CoroutineScope
+    ): GroupUserList {
+        var aux : Array<UserCreds> = emptyArray()
+        groupAPI.getGroupList().enqueue(object : Callback<GroupUserList> {
+            override fun onResponse(call: Call<GroupUserList>, response: Response<GroupUserList>) {
+                if (response.isSuccessful) {
+                    aux = response.body()!!.students
+                }
+                else {
+                    val errorMessage: String = if (response.code() == 400)
+                        "Invalid data"
+                    else
+                        "Unknown error"
+                    coroutineScope.launch {
+                        scaffoldState.snackbarHostState.showSnackbar(
+                            message = errorMessage
+                        )
+                    }
+                }
+
+            }
+            override fun onFailure(call: Call<GroupUserList>, t: Throwable) {
+                //TODO("Not yet implemented")
+            }
+        })
+        return GroupUserList(aux)
+    }
 
     fun createGroup(
         profileViewModel: ProfileViewModel,
@@ -93,9 +131,9 @@ class GroupAction(profileViewModel: ProfileViewModel) {
             }
 
             override fun onFailure(call: Call<GroupCreds>, t: Throwable) {
-//                profileViewModel.currentProfile.group= sendObject
-//                profileViewModel.currentProfile.admin= true
-//                navController.navigate(Routes.Queue.route)
+                profileViewModel.currentProfile.group= sendObject
+                profileViewModel.currentProfile.admin= true
+                navController.navigate(Routes.Queue.route)
                 //TODO("Not yet implemented")
             }
         })
@@ -144,9 +182,9 @@ class GroupAction(profileViewModel: ProfileViewModel) {
                 }
 
                 override fun onFailure(call: Call<Void>, t: Throwable) {
-//                    profileViewModel.currentProfile.group=sendObject
-//                    profileViewModel.currentProfile.admin = false
-//                    navController.navigate(Routes.Queue.route)
+                    profileViewModel.currentProfile.group=sendObject
+                    profileViewModel.currentProfile.admin = false
+                    navController.navigate(Routes.Queue.route)
 //                    //TODO("Not yet implemented")
                 }
             })
@@ -159,7 +197,7 @@ class GroupAction(profileViewModel: ProfileViewModel) {
         userAPI.getGroup().enqueue(object: Callback<GroupCreds> {
             override fun onResponse(call: Call<GroupCreds>, response: Response<GroupCreds>) {
                 if (response.isSuccessful) {
-                    //
+//                   return response.body()
                 }
                 else {
                     val errorMessage: String = if (response.code() == 400)
@@ -175,7 +213,7 @@ class GroupAction(profileViewModel: ProfileViewModel) {
             }
 
             override fun onFailure(call: Call<GroupCreds>, t: Throwable) {
-                TODO("Not yet implemented")
+               // TODO("Not yet implemented")
             }
         })
     }
@@ -190,7 +228,7 @@ class GroupAction(profileViewModel: ProfileViewModel) {
         userAPI.deleteGroup().enqueue(object: Callback<Void> {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
                 if (response.isSuccessful) {
-                    //
+                    navController.navigate(Routes.ChooseGroup.route)
                 }
                 else {
                     val errorMessage: String = if (response.code() == 400)
@@ -208,14 +246,13 @@ class GroupAction(profileViewModel: ProfileViewModel) {
             }
 
             override fun onFailure(call: Call<Void>, t: Throwable) {
-                TODO("Not yet implemented")
+                //TODO("Not yet implemented")
             }
         })
     }
 
     fun exitGroup(
         profileViewModel: ProfileViewModel,
-        groupViewModel: GroupViewModel,
         navController: NavHostController,
         scaffoldState: ScaffoldState,
         coroutineScope: CoroutineScope
@@ -223,7 +260,7 @@ class GroupAction(profileViewModel: ProfileViewModel) {
         userAPI.exitGroup().enqueue(object: Callback<Void> {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
                 if (response.isSuccessful) {
-                    //
+                    navController.navigate(Routes.Login.route)
                 }
                 else {
                     val errorMessage: String = if (response.code() == 400)
@@ -239,7 +276,7 @@ class GroupAction(profileViewModel: ProfileViewModel) {
             }
 
             override fun onFailure(call: Call<Void>, t: Throwable) {
-                TODO("Not yet implemented")
+                //TODO("Not yet implemented")
             }
         })
     }

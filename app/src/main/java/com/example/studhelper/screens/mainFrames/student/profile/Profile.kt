@@ -18,7 +18,7 @@ import com.example.studhelper.InterFamily
 import com.example.studhelper.R
 import com.example.studhelper.components.BottomMenu
 import com.example.studhelper.components.CustomButton
-import com.example.studhelper.funtions.logOut
+import com.example.studhelper.funtions.LoginAction
 import com.example.studhelper.screens.mainFrames.student.profile.ProfileViewModel
 
 @Composable
@@ -52,7 +52,7 @@ profileViewModel: ProfileViewModel) {
                ) {
                    Text(text = profileViewModel.currentProfile.fullName, fontFamily = InterFamily, fontWeight = FontWeight.Bold, fontSize = 40.sp, color = Color.White)
                    Text(text = profileViewModel.currentProfile.group.name, fontFamily = InterFamily, fontSize = 20.sp,color = Color.White)
-                   CustomButton(action = {logOut(profileViewModel,navController)}, name ="Выйти из профиля" )
+                   CustomButton(action = {LoginAction().logOut(profileViewModel,navController)}, name ="Выйти из профиля" )
                }
 
             }

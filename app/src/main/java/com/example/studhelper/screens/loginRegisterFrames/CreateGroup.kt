@@ -18,8 +18,6 @@ import androidx.navigation.NavHostController
 import com.example.studhelper.components.CustomButton
 import com.example.studhelper.components.Input
 import com.example.studhelper.funtions.GroupAction
-import com.example.studhelper.funtions.createGroup
-import com.example.studhelper.funtions.joinGroup
 import com.example.studhelper.funtions.redirect
 import com.example.studhelper.screens.mainFrames.student.myGroup.GroupViewModel
 import com.example.studhelper.screens.mainFrames.student.profile.ProfileViewModel
