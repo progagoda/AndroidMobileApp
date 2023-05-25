@@ -164,7 +164,7 @@ class GroupAction(profileViewModel: ProfileViewModel) {
             .enqueue(object : Callback<Void> {
                 override fun onResponse(call: Call<Void>, response: Response<Void>) {
                     if (response.isSuccessful) {
-                        profileViewModel.currentProfile.group=sendObject
+                        profileViewModel.currentProfile.group=Group("", groupCode.value)
                         profileViewModel.currentProfile.admin = false
                         navController.navigate(Routes.Queue.route)
                     }
