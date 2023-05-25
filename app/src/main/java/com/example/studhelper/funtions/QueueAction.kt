@@ -181,13 +181,17 @@ class QueueAction(profileViewModel: ProfileViewModel) {
     fun enterQueue(
         queueId: Int,
         profileViewModel: ProfileViewModel,
+        subjectViewModel: SubjectViewModel,
         scaffoldState: ScaffoldState,
         coroutineScope: CoroutineScope
     ) {
         groupAPI.enterQueue(queueId).enqueue(object: Callback<Void> {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
                 if (response.isSuccessful) {
-//                    profileViewModel.currentProfile.group=response.body().
+                    subjectViewModel.subscribe(
+                        profileViewModel.currentProfile,
+                        subjectViewModel.currentSubject
+                    )
                 }
                 else {
                     val errorMessage: String = if (response.code() == 404)

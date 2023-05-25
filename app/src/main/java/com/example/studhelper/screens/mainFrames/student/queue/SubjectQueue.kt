@@ -99,11 +99,11 @@ fun SubjectQueue(
                     Button(
                         onClick = {
                             if (!state) {
-                                QueueAction(profileViewModel).enterQueue(subjectViewModel.currentSubject.id,profileViewModel,scaffoldState, coroutineScope )
-//                                subjectViewModel.subscribe(
-//                                    profileViewModel.currentProfile,
-//                                    subjectViewModel.currentSubject
-//                                )
+                                QueueAction(profileViewModel).enterQueue(subjectViewModel.currentSubject.id,profileViewModel,subjectViewModel,scaffoldState, coroutineScope)
+                                subjectViewModel.subscribe(
+                                    profileViewModel.currentProfile,
+                                    subjectViewModel.currentSubject
+                                )
                                 state = !state} else{
                                 QueueAction(profileViewModel)
                                     .quitQueue(subjectViewModel.currentSubject.id,
